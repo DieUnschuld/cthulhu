@@ -175,7 +175,7 @@
                     </div>
                 </div>
 
-<!-- Allgemeine Dokumente -->
+                <!-- Allgemeine Dokumente -->
                 <div>
                     <h4 class="text-sm font-cinzel text-gold-400 mb-2">Allgemeines Dokument / Handout hinterlegen</h4>
                     <div class="space-y-2 mb-4">
@@ -183,7 +183,6 @@
                         <input type="text" id="new-doc-url" placeholder="Link (z.B. Google Drive / Dropbox URL)" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300">
                         <button onclick="addDocument()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black cursor-pointer">Dokument hinzufügen</button>
                     </div>
-                    <!-- Vorhandene Dokumente direkt im Admin-Panel verwalten -->
                     <h4 class="text-xs font-cinzel text-gold-400 mb-1">Vorhandene Dokumente verwalten</h4>
                     <div id="admin-documents-container" class="space-y-2 max-h-40 overflow-y-auto pr-2"></div>
                 </div>
@@ -244,8 +243,10 @@
             if (iframe) iframe.src = "";
         }
 
-        // Direktes Event-Binding für den Überspringen-Button
-        document.getElementById('skip-btn').addEventListener('click', skipIntro);
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', skipIntro);
+        }
 
         const iframeElem = document.getElementById('intro-iframe');
         if (iframeElem) {
@@ -263,8 +264,7 @@
                             <img src="${c.portrait || 'https://via.placeholder.com/60'}" class="w-12 h-12 object-cover border border-gold-500/50 rounded flex-shrink-0" alt="Portrait">
                             <div>
                                 <span class="font-cinzel text-gold-400 text-sm font-bold block">${c.name}</span>
-                                <span class="text-xs text-stone-400 block">${c.role}</span>
-                                ${c.docUrl && c.docUrl !== '#' ? `<a href="${c.docUrl}" target="_blank" class="text-xs text-gold-500 underline mt-1 inline-block">📄 ${c.docName || 'Charakter-Dokument'}</a>` : ''}
+                                <span class="text-xs text-stone-400 block">${c.role}</span>${c.docUrl && c.docUrl !== '#' ? `<a href="${c.docUrl}" target="_blank" class="text-xs text-gold-500 underline mt-1 inline-block">📄 ${c.docName || 'Charakter-Dokument'}</a>` : ''}
                             </div>
                         </div>
                         <div class="w-full sm:w-auto flex justify-end">
@@ -382,43 +382,6 @@
             saveData();
             renderAdminPanel();
         }
-
-        function renderAdminPanel() {
-            // ... (bestehender Code für Abenteuer)
-
-            // NEU: Dokumenten-Verwaltung im Admin-Panel rendern
-            const docContainer = document.getElementById('admin-documents-container');
-            if (docContainer) {
-                docContainer.innerHTML = appData.documents.map((doc, index) => `
-                    <div class="border border-gold-500/30 bg-black p-2 rounded text-xs flex justify-between items-center">
-                        <span class="text-stone-300 truncate max-w-[200px]">${doc.name}</span>
-                        <div class="flex gap-2 flex-shrink-0">
-                            <button onclick="editDocument(${index})" class="text-gold-400 underline cursor-pointer">Bearbeiten</button>
-                            <button onclick="deleteDocument(${index})" class="text-red-400 underline cursor-pointer">Löschen</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function editDocument(index) {
-            const doc = appData.documents[index];
-            editContext = { type: 'document', index };
-            document.getElementById('edit-modal-title').innerText = "Dokument bearbeiten";
-            document.getElementById('edit-modal-body').innerHTML = `
-                <label class="text-xs text-gold-400">Dokumentenname</label>
-                <input type="text" id="edit-doc-name" value="${doc.name}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
-                <label class="text-xs text-gold-400">Dokument-Link (URL)</label>
-                <input type="text" id="edit-doc-url" value="${doc.url}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white">
-            `;
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function deleteDocument(index) {
-            appData.documents.splice(index, 1);
-            saveData();
-            renderAdminPanel();
-        }
         function addDocument() {
             const name = document.getElementById('new-doc-name').value.trim();
             const url = document.getElementById('new-doc-url').value.trim();
@@ -427,6 +390,7 @@
             document.getElementById('new-doc-name').value = '';
             document.getElementById('new-doc-url').value = '';
             saveData();
+            renderAdminPanel();
             alert('Dokument hinzugefügt.');
         }
         function addCharToAdv(advId) {
@@ -456,85 +420,4 @@
             document.getElementById('edit-modal-title').innerText = "Abenteuer bearbeiten";
             document.getElementById('edit-modal-body').innerHTML = `
                 <label class="text-xs text-gold-400">Titel</label>
-                <input type="text" id="edit-adv-title" value="${adv.title}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
-                <label class="text-xs text-gold-400">Beschreibung</label>
-                <textarea id="edit-adv-desc" class="w-full bg-black border border-gold-500 p-2 text-xs text-white h-24">${adv.description}</textarea>
-            `;
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function editCharacter(advId, charId) {
-            const adv = appData.adventures.find(a => a.id === advId);
-            const char = adv.characters.find(c => c.id === charId);
-            editContext = { type: 'character', advId, charId };
-            document.getElementById('edit-modal-title').innerText = "Ermittler bearbeiten";
-            document.getElementById('edit-modal-body').innerHTML = `
-                <label class="text-xs text-gold-400">Name</label>
-                <input type="text" id="edit-char-name" value="${char.name}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
-                <label class="text-xs text-gold-400">Rolle / Beruf</label>
-                <input type="text" id="edit-char-role" value="${char.role}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
-                <label class="text-xs text-gold-400">Portrait Bild-URL</label>
-                <input type="text" id="edit-char-portrait" value="${char.portrait || ''}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
-                <label class="text-xs text-gold-400">Dokument-Name (z.B. Charakterbogen PDF)</label>
-                <input type="text" id="edit-char-docname" value="${char.docName || ''}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
-                <label class="text-xs text-gold-400">Dokument-Link (URL)</label>
-                <input type="text" id="edit-char-docurl" value="${char.docUrl || ''}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white">
-            `;
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-            editContext = null;
-        }
-
-        function saveEditModal() {
-            if(editContext.type === 'adventure') {
-                const adv = appData.adventures.find(a => a.id === editContext.id);
-                adv.title = document.getElementById('edit-adv-title').value;
-                adv.description = document.getElementById('edit-adv-desc').value;
-            } else if(editContext.type === 'character') {
-                const adv = appData.adventures.find(a => a.id === editContext.advId);
-                const char = adv.characters.find(c => c.id === editContext.charId);
-                char.name = document.getElementById('edit-char-name').value;
-                char.role = document.getElementById('edit-char-role').value;
-                char.portrait = document.getElementById('edit-char-portrait').value;
-                char.docName = document.getElementById('edit-char-docname').value;
-                char.docUrl = document.getElementById('edit-char-docurl').value;
-            }
-            saveData();
-            closeEditModal();
-            renderAdminPanel();
-        }
-
-        function renderAdminPanel() {
-            const container = document.getElementById('admin-adventures-container');
-            container.innerHTML = appData.adventures.map(adv => `
-                <div class="border border-gold-500/30 bg-black p-3 rounded text-xs space-y-2">
-                    <div class="flex justify-between items-center border-b border-stone-800 pb-1">
-                        <span class="font-cinzel text-gold-400 font-bold text-sm">${adv.title}</span>
-                        <div class="flex gap-2">
-                            <button onclick="editAdventure('${adv.id}')" class="text-gold-400 underline cursor-pointer">Akte bearbeiten</button>
-                            <button onclick="addCharToAdv('${adv.id}')" class="text-gold-400 underline cursor-pointer">+ Charakter</button>
-                            <button onclick="deleteAdv('${adv.id}')" class="text-red-400 underline cursor-pointer">Löschen</button>
-                        </div>
-                    </div>
-                    <div class="pl-2 space-y-1">
-                        ${adv.characters.map(c => `
-                            <div class="text-stone-400 flex justify-between items-center py-0.5">
-                                <span>- ${c.name} (${c.role}) ${c.selectedBy ? '[Besetzt: ' + c.selectedBy + ']' : ''}</span>
-                                <div class="flex gap-2">
-                                    <button onclick="editCharacter('${adv.id}', '${c.id}')" class="text-gold-400 underline cursor-pointer">Bearbeiten</button>
-                                    <button onclick="removeChar('${adv.id}', '${c.id}')" class="text-red-500 hover:text-red-300 cursor-pointer">Entfernen</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        render();
-    </script>
-</body>
-</html>
+                <input type="
