@@ -1,168 +1,544 @@
-<!DOCTYPE html>
-<html lang="de" class="dark">
+<!doctype html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cthulhu - Chroniken des Wahnsinns</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        gold: { 400: '#d4af37', 500: '#c5a059', 600: '#aa8c2c' },
-                        darkbg: '#050505',
-                        panelbg: '#0d0d0d'
-                    },
-                    fontFamily: {
-                        cinzel: ['Cinzel', 'serif'],
-                        fell: ['IM Fell English', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #050505;
-            color: #d1d5db;
-            font-family: 'IM Fell English', serif;
-            letter-spacing: 0.03em;
-        }
-        h1, h2, h3, .font-cinzel {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.08em;
-        }
-        .gold-border {
-            border: 1px solid #c5a059;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(197,160,89,0.2);
-        }
-        .gold-glow {
-            text-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
-        }
-        .corner-ornament {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            border-color: #c5a059;
-            pointer-events: none;
-        }
-        .corner-tl { top: 4px; left: 4px; border-top: 2px solid; border-left: 2px solid; }
-        .corner-tr { top: 4px; right: 4px; border-top: 2px solid; border-right: 2px solid; }
-        .corner-bl { bottom: 4px; left: 4px; border-bottom: 2px solid; border-left: 2px solid; }
-        .corner-br { bottom: 4px; right: 4px; border-bottom: 2px solid; border-right: 2px solid; }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <title>Cthulhu – Chroniken des Wahnsinns</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050505;
+      --panel: #0d0d0d;
+      --text: #d1d5db;
+      --muted: #a8a29e;
+      --gold: #c5a059;
+      --gold-light: #d4af37;
+      --border: rgba(197, 160, 89, .55);
+      --serif: "IM Fell English", Georgia, serif;
+      --display: "Cinzel", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      letter-spacing: .03em;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
+    .hidden { display: none !important; }
+
+    .page {
+      width: min(100% - 2rem, 72rem);
+      min-height: 100vh;
+      margin-inline: auto;
+      padding: 2rem 0;
+    }
+
+    .site-header {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding: 1rem 0 1.5rem;
+      border-bottom: 1px solid rgba(197, 160, 89, .3);
+      text-align: center;
+    }
+
+    .sigil {
+      width: 3rem;
+      height: 3rem;
+      color: var(--gold);
+    }
+
+    h1, h2, h3, h4, .display {
+      font-family: var(--display);
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      margin: .5rem 0;
+      color: var(--gold-light);
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      text-shadow: 0 0 8px rgba(197, 160, 89, .4);
+    }
+
+    .subtitle { color: var(--muted); font-style: italic; }
+
+    .admin-open {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .button {
+      border: 1px solid var(--border);
+      padding: .65rem 1rem;
+      background: transparent;
+      color: var(--gold-light);
+      font-family: var(--display);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      transition: background .2s, color .2s;
+    }
+
+    .button:hover {
+      background: var(--gold);
+      color: #050505;
+    }
+
+    .button-primary {
+      background: var(--gold);
+      color: #050505;
+      font-weight: 700;
+    }
+
+    .button-muted {
+      border-color: #57534e;
+      color: var(--muted);
+    }
+
+    .section { margin: 2.5rem 0; }
+
+    .section-title {
+      margin: 0 0 1rem;
+      padding-left: .8rem;
+      border-left: 2px solid var(--gold);
+      color: var(--gold-light);
+      font-size: 1.25rem;
+    }
+
+    .panel {
+      position: relative;
+      border: 1px solid var(--gold);
+      background: var(--panel);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, .8),
+                  0 0 10px rgba(197, 160, 89, .15);
+    }
+
+    .ornament {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-color: var(--gold);
+      pointer-events: none;
+    }
+
+    .top-left { top: 4px; left: 4px; border-top: 2px solid; border-left: 2px solid; }
+    .top-right { top: 4px; right: 4px; border-top: 2px solid; border-right: 2px solid; }
+    .bottom-left { bottom: 4px; left: 4px; border-bottom: 2px solid; border-left: 2px solid; }
+    .bottom-right { bottom: 4px; right: 4px; border-bottom: 2px solid; border-right: 2px solid; }
+
+    .featured { min-height: 10rem; padding: 1.5rem; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 1rem;
+      border: 1px solid var(--gold);
+      padding: .35rem .65rem;
+      color: var(--gold-light);
+      background: rgba(197, 160, 89, .08);
+      font: .7rem var(--display);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .featured h3, .adventure-card h3 {
+      margin: .25rem 0 .75rem;
+      color: var(--gold-light);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+      gap: 1rem;
+    }
+
+    .adventure-card {
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .adventure-card p, .featured p {
+      color: #c4bdb5;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .card-actions { margin-top: 1rem; }
+
+    .documents { padding: 1.5rem; }
+
+    .empty-state {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(197, 160, 89, .2);
+      color: #78716c;
+      font: .7rem var(--display);
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow-y: auto;
+      padding: 1rem;
+      background: rgba(0, 0, 0, .88);
+    }
+
+    .intro-content {
+      width: min(100%, 56rem);
+      text-align: center;
+    }
+
+    .video-frame {
+      aspect-ratio: 16 / 9;
+      margin-bottom: 1.25rem;
+      padding: .5rem;
+      border-radius: .25rem;
+    }
+
+    .video-frame iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .modal {
+      width: min(100%, 42rem);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid rgba(197, 160, 89, .3);
+    }
+
+    .modal-header h2 { margin: 0; color: var(--gold-light); font-size: 1.15rem; }
+
+    .form { display: grid; gap: .75rem; }
+
+    .form label {
+      color: var(--gold-light);
+      font: .75rem var(--display);
+    }
+
+    .form input, .form textarea {
+      width: 100%;
+      margin-top: .35rem;
+      border: 1px solid var(--border);
+      padding: .7rem;
+      background: #050505;
+      color: var(--text);
+    }
+
+    .form textarea { min-height: 7rem; resize: vertical; }
+    .form-actions { display: flex; justify-content: flex-end; gap: .75rem; }
+
+    .notice {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .page { width: min(100% - 1.25rem, 72rem); padding-top: 1rem; }
+      .site-header { padding-top: 3.5rem; }
+      .admin-open { right: 0; }
+      .featured, .documents { padding: 1.1rem; }
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-black">
 
-    <!-- INTRO OVERLAY -->
-    <div id="intro-screen" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-4">
-        <div class="relative w-full max-w-4xl aspect-video gold-border bg-black rounded p-2 mb-6">
-            <div class="corner-ornament corner-tl"></div>
-            <div class="corner-ornament corner-tr"></div>
-            <div class="corner-ornament corner-bl"></div>
-            <div class="corner-ornament corner-br"></div>
-            <iframe id="intro-iframe" class="w-full h-full border-0" src="https://www.youtube.com/embed/JWImZexOj94?autoplay=1" title="Cthulhu Intro" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<body>
+  <section id="intro-screen" class="overlay" aria-label="Prolog">
+    <div class="intro-content">
+      <div class="video-frame panel">
+        <span class="ornament top-left" aria-hidden="true"></span>
+        <span class="ornament top-right" aria-hidden="true"></span>
+        <span class="ornament bottom-left" aria-hidden="true"></span>
+        <span class="ornament bottom-right" aria-hidden="true"></span>
+        <iframe
+          src="https://www.youtube.com/embed/JWImZexOj94?autoplay=1"
+          title="Cthulhu Intro"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <button id="skip-intro" class="button" type="button">
+        Prolog überspringen &amp; Akten öffnen →
+      </button>
+    </div>
+  </section>
+
+  <main id="main-app" class="page hidden">
+    <header class="site-header">
+      <button id="open-admin" class="button admin-open" type="button">
+        Spielleiter-Bereich
+      </button>
+
+      <svg class="sigil" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <polygon
+          points="50,5 61,35 95,35 67,55 78,85 50,70 22,85 33,55 5,35 39,35"
+          stroke="currentColor"
+          stroke-width="3"
+        />
+        <circle cx="50" cy="50" r="15" stroke="currentColor" stroke-width="2" />
+        <circle cx="50" cy="50" r="4" fill="currentColor" />
+      </svg>
+
+      <h1>Cthulhu Chroniken</h1>
+      <p class="subtitle">„Es ist nicht tot, was ewig liegt, bis dass die Zeit den Tod besiegt.“</p>
+    </header>
+
+    <section class="section panel featured" aria-labelledby="featured-label">
+      <span class="ornament top-left" aria-hidden="true"></span>
+      <span class="ornament top-right" aria-hidden="true"></span>
+      <span class="ornament bottom-left" aria-hidden="true"></span>
+      <span class="ornament bottom-right" aria-hidden="true"></span>
+
+      <div id="featured-label" class="eyebrow">Aktueller Fokus / Ausgewählte Akte</div>
+      <div id="featured-content" aria-live="polite"></div>
+    </section>
+
+    <section class="section" aria-labelledby="adventures-heading">
+      <h2 id="adventures-heading" class="section-title">Verfügbare Akten &amp; Fälle</h2>
+      <div id="adventures-list" class="grid"></div>
+    </section>
+
+    <section class="section panel documents" aria-labelledby="documents-heading">
+      <span class="ornament top-left" aria-hidden="true"></span>
+      <span class="ornament top-right" aria-hidden="true"></span>
+      <span class="ornament bottom-left" aria-hidden="true"></span>
+      <span class="ornament bottom-right" aria-hidden="true"></span>
+
+      <h2 id="documents-heading" class="section-title">
+        Allgemeine Ermittlerakten &amp; Dokumente (Downloads)
+      </h2>
+      <div id="documents-list" class="empty-state">Derzeit sind keine Dokumente hinterlegt.</div>
+    </section>
+
+    <footer>Cthulhu Web-Archiv • Zugriff nur für autorisierte Ermittler</footer>
+  </main>
+
+  <section id="admin-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+    <div class="modal panel">
+      <span class="ornament top-left" aria-hidden="true"></span>
+      <span class="ornament top-right" aria-hidden="true"></span>
+      <span class="ornament bottom-left" aria-hidden="true"></span>
+      <span class="ornament bottom-right" aria-hidden="true"></span>
+
+      <div class="modal-header">
+        <h2 id="admin-title">Spielleiter-Schaltzentrale</h2>
+        <button id="close-admin" class="button button-muted" type="button">Schließen</button>
+      </div>
+
+      <p class="notice">
+        Demo-Verwaltung: Einträge werden nur in diesem Browser gespeichert.
+        Für eine echte Zugriffsbeschränkung ist eine serverseitige Anmeldung erforderlich.
+      </p>
+
+      <form id="adventure-form" class="form">
+        <label>
+          Titel des Abenteuers
+          <input id="new-adv-title" name="title" maxlength="120" required>
+        </label>
+
+        <label>
+          Beschreibung / Fallakte
+          <textarea id="new-adv-desc" name="description" maxlength="3000" required></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="button button-primary" type="submit">Abenteuer anlegen</button>
         </div>
-        <!-- Direktes window.skipIntro aufrufbar gemacht -->
-        <button onclick="window.skipIntro()" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase cursor-pointer">
-            Prolog überspringen & Akten öffnen →
-        </button>
+      </form>
     </div>
+  </section>
 
-    <!-- MAIN APP CONTAINER -->
-    <div id="main-app" class="hidden flex-1 flex flex-col max-w-6xl w-full mx-auto p-4 md:p-8">
-        
-        <!-- HEADER -->
-        <header class="text-center mb-10 relative pb-6 border-b border-gold-500/30">
-            <div class="flex justify-center mb-3">
-                <svg class="w-12 h-12 text-gold-500 opacity-90" viewBox="0 0 100 100" fill="currentColor">
-                    <polygon points="50,5 61,35 95,35 67,55 78,85 50,70 22,85 33,55 5,35 39,35" fill="none" stroke="currentColor" stroke-width="3"/>
-                    <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="50" cy="50" r="4" fill="currentColor"/>
-                </svg>
-            </div>
-            <h1 class="text-3xl md:text-5xl font-bold text-gold-400 gold-glow mb-2">Cthulhu Chroniken</h1>
-            <p class="text-stone-400 italic text-sm md:text-base">"Es ist nicht tot, was ewig liegt, bis dass die Zeit den Tod besiegt."</p>
-            
-            <div class="absolute top-0 right-0 flex gap-3">
-                <button onclick="openAdminModal()" class="text-xs font-cinzel border border-gold-500/50 px-3 py-1.5 text-gold-400 hover:bg-gold-500/20 transition-all cursor-pointer">
-                    Spielleiter-Bereich
-                </button>
-            </div>
-        </header>
+  <script type="module">
+    const STORAGE_KEY = "cthulhu-chroniken-adventures";
 
-        <!-- CONTENT -->
-        <main class="space-y-10 flex-1">
-            
-            <!-- PROMINENTES ABENTEUER -->
-            <section id="featured-section" class="relative gold-border bg-panelbg p-6 md:p-8 rounded">
-                <div class="corner-ornament corner-tl"></div>
-                <div class="corner-ornament corner-tr"></div>
-                <div class="corner-ornament corner-bl"></div>
-                <div class="corner-ornament corner-br"></div>
-                
-                <div class="inline-block px-3 py-1 bg-gold-500/10 border border-gold-500 text-gold-400 text-xs font-cinzel mb-4 tracking-widest uppercase">
-                    Aktueller Fokus / Ausgewählte Akte
-                </div>
-                <div id="featured-content"></div>
-            </section>
+    const introScreen = document.querySelector("#intro-screen");
+    const mainApp = document.querySelector("#main-app");
+    const adminModal = document.querySelector("#admin-modal");
+    const adventuresList = document.querySelector("#adventures-list");
+    const featuredContent = document.querySelector("#featured-content");
+    const adventureForm = document.querySelector("#adventure-form");
 
-            <!-- ALLE ABENTEUER & AUSWAHL -->
-            <section>
-                <h2 class="text-2xl font-cinzel text-gold-400 mb-6 border-l-2 border-gold-500 pl-3">Verfügbare Akten & Fälle</h2>
-                <div id="adventures-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-            </section>
+    function loadAdventures() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(saved) ? saved : [];
+      } catch {
+        return [];
+      }
+    }
 
-            <!-- DOKUMENTE & HANDOUTS DOWNLOAD -->
-            <section class="gold-border bg-panelbg p-6 rounded relative">
-                <div class="corner-ornament corner-tl"></div>
-                <div class="corner-ornament corner-tr"></div>
-                <div class="corner-ornament corner-bl"></div>
-                <div class="corner-ornament corner-br"></div>
-                
-                <h2 class="text-xl font-cinzel text-gold-400 mb-4">Allgemeine Ermittlerakten & Dokumente (Downloads)</h2>
-                <div id="documents-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
-            </section>
+    let adventures = loadAdventures();
+    let featuredId = adventures[0]?.id ?? null;
 
-        </main>
+    function saveAdventures() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(adventures));
+      } catch {
+        // The page remains usable if browser storage is unavailable.
+      }
+    }
 
-        <!-- FOOTER -->
-        <footer class="mt-16 text-center text-xs text-stone-500 border-t border-gold-500/20 pt-6 font-cinzel">
-            Cthulhu Web-Archiv &bull; Zugriff nur für autorisierte Ermittler
-        </footer>
-    </div>
+    function createAdventureElement(adventure) {
+      const article = document.createElement("article");
+      article.className = "adventure-card";
 
-    <!-- ADMIN MODAL -->
-    <div id="admin-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-        <div class="gold-border bg-panelbg max-w-3xl w-full p-6 rounded relative max-h-[90vh] overflow-y-auto">
-            <div class="corner-ornament corner-tl"></div>
-            <div class="corner-ornament corner-tr"></div>
-            <div class="corner-ornament corner-bl"></div>
-            <div class="corner-ornament corner-br"></div>
+      const title = document.createElement("h3");
+      title.textContent = adventure.title;
 
-            <div id="admin-login-view">
-                <h3 class="text-xl font-cinzel text-gold-400 mb-4">Spielleiter-Authentifizierung</h3>
-                <p class="text-sm mb-4 text-stone-400">Geben Sie das Geheimwort ein, um Zugriff auf die Aktenverwaltung zu erhalten.</p>
-                <input type="password" id="admin-pass" placeholder="Geheimwort (admin)" class="w-full bg-black border border-gold-500/50 p-2 text-stone-200 mb-4 focus:outline-none focus:border-gold-500">
-                <div class="flex justify-end gap-3">
-                    <button onclick="closeAdminModal()" class="px-4 py-2 text-xs font-cinzel border border-stone-600 text-stone-400 cursor-pointer">Abbrechen</button>
-                    <button onclick="checkAdminLogin()" class="px-4 py-2 text-xs font-cinzel bg-gold-500 text-black font-bold hover:bg-gold-400 cursor-pointer">Einlass gewähren</button>
-                </div>
-            </div>
+      const description = document.createElement("p");
+      description.textContent = adventure.description;
 
-            <div id="admin-panel-view" class="hidden space-y-6">
-                <div class="flex justify-between items-center border-b border-gold-500/30 pb-3">
-                    <h3 class="text-xl font-cinzel text-gold-400">Spielleiter-Schaltzentrale</h3>
-                    <button onclick="closeAdminModal()" class="text-gold-400 hover:text-white text-sm font-cinzel cursor-pointer">[ Schließen ]</button>
-                </div>
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
 
-                <!-- Abenteuer anlegen -->
-                <div>
-                    <h4 class="text-sm font-cinzel text-gold-400 mb-2">Neues Abenteuer anlegen</h4>
-                    <div class="space-y-2">
-                        <input type="text" id="new-adv-title" placeholder="Titel des Abenteuers" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300">
-                        <textarea id="new-adv-desc" placeholder="Beschreibung / Fallakte" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300 h-20"></textarea>
-                        <button onclick="addAdventure()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black
+      const featureButton = document.createElement("button");
+      featureButton.className = "button";
+      featureButton.type = "button";
+      featureButton.textContent = adventure.id === featuredId
+        ? "Aktueller Fokus"
+        : "Als Fokus auswählen";
+      featureButton.disabled = adventure.id === featuredId;
+      featureButton.addEventListener("click", () => {
+        featuredId = adventure.id;
+        render();
+      });
+
+      actions.append(featureButton);
+      article.append(title, description, actions);
+      return article;
+    }
+
+    function renderFeatured() {
+      featuredContent.replaceChildren();
+
+      const featured = adventures.find(item => item.id === featuredId);
+
+      if (!featured) {
+        const empty = document.createElement("p");
+        empty.className = "empty-state";
+        empty.textContent = "Noch keine Akte ausgewählt. Lege im Spielleiter-Bereich ein Abenteuer an.";
+        featuredContent.append(empty);
+        return;
+      }
+
+      const title = document.createElement("h3");
+      title.textContent = featured.title;
+
+      const description = document.createElement("p");
+      description.textContent = featured.description;
+
+      featuredContent.append(title, description);
+    }
+
+    function render() {
+      adventuresList.replaceChildren();
+      renderFeatured();
+
+      if (adventures.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "empty-state";
+        empty.textContent = "Noch sind keine Abenteuer hinterlegt.";
+        adventuresList.append(empty);
+        return;
+      }
+
+      for (const adventure of adventures) {
+        adventuresList.append(createAdventureElement(adventure));
+      }
+    }
+
+    document.querySelector("#skip-intro").addEventListener("click", () => {
+      introScreen.classList.add("hidden");
+      mainApp.classList.remove("hidden");
+    });
+
+    document.querySelector("#open-admin").addEventListener("click", () => {
+      adminModal.classList.remove("hidden");
+      document.querySelector("#new-adv-title").focus();
+    });
+
+    function closeAdmin() {
+      adminModal.classList.add("hidden");
+    }
+
+    document.querySelector("#close-admin").addEventListener("click", closeAdmin);
+
+    adminModal.addEventListener("click", event => {
+      if (event.target === adminModal) closeAdmin();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeAdmin();
+    });
+
+    adventureForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const formData = new FormData(adventureForm);
+      const title = String(formData.get("title") || "").trim();
+      const description = String(formData.get("description") || "").trim();
+
+      if (!title || !description) return;
+
+      const adventure = {
+        id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
+        title,
+        description
+      };
+
+      adventures.push(adventure);
+      featuredId ??= adventure.id;
+      saveAdventures();
+      render();
+      adventureForm.reset();
+      closeAdmin();
+    });
+
+    render();
+  </script>
+</body>
+</html>
