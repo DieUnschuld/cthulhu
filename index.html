@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cthulhu Abenteuer-Archiv</title>
-    <!-- Tailwind CSS für schnelles, sauberes Layout -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <script>
@@ -27,28 +26,11 @@
         }
     </script>
     <style>
-        body {
-            background-color: #0a0a0a;
-            color: #d4af37;
-            font-family: 'Playfair Display', serif;
-        }
-        h1, h2, h3, h4, .font-cinzel {
-            font-family: 'Cinzel', serif;
-        }
-        /* Feine, dezente Goldränder und Ornamente */
-        .gold-border {
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(212, 175, 55, 0.05);
-        }
-        .gold-border-glow {
-            border: 1px solid rgba(212, 175, 55, 0.6);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.08);
-        }
-        .gold-text {
-            color: #d4af37;
-            text-shadow: 0 0 2px rgba(212,175,55,0.2);
-        }
-        /* Benutzerdefinierte Scrollbar im Stil */
+        body { background-color: #0a0a0a; color: #d4af37; font-family: 'Playfair Display', serif; }
+        h1, h2, h3, h4, .font-cinzel { font-family: 'Cinzel', serif; }
+        .gold-border { border: 1px solid rgba(212, 175, 55, 0.3); box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(212, 175, 55, 0.05); }
+        .gold-border-glow { border: 1px solid rgba(212, 175, 55, 0.6); box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.08); }
+        .gold-text { color: #d4af37; text-shadow: 0 0 2px rgba(212,175,55,0.2); }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #332912; border: 1px solid #d4af37; }
@@ -58,7 +40,6 @@
 
     <!-- INTRO OVERLAY -->
     <div id="intro-overlay" class="fixed inset-0 z-50 bg-obsidian flex flex-col items-center justify-center p-6 transition-opacity duration-1000">
-        <!-- Ältestenzeichen als Intro-Symbol -->
         <div class="mb-6 opacity-85">
             <svg class="w-20 h-20 text-gold animate-pulse" viewBox="0 0 100 100" fill="currentColor">
                 <polygon points="50,5 61,35 93,35 67,55 77,85 50,70 23,85 33,55 7,35 39,35" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -68,7 +49,6 @@
         </div>
         <h2 class="text-2xl font-cinzel gold-text tracking-widest mb-8 text-center">Das Unbekannte erwacht</h2>
         <div id="youtube-container" class="w-full max-w-3xl aspect-video mb-8 gold-border rounded bg-black overflow-hidden relative shadow-2xl">
-            <!-- Wird dynamisch mit YouTube-Iframe gefüllt -->
             <div id="yt-player-slot" class="w-full h-full flex items-center justify-center text-gold/50 text-sm">Lade Omen...</div>
         </div>
         <button onclick="skipIntro()" class="px-8 py-3 bg-obsidian border border-gold/60 text-gold font-cinzel tracking-wider hover:bg-gold hover:text-obsidian transition-all duration-300 shadow-lg">
@@ -76,11 +56,10 @@
         </button>
     </div>
 
-    <!-- HEADER / NAVIGATION -->
+    <!-- HEADER -->
     <header class="w-full border-b border-gold/20 bg-obsidian/90 sticky top-4 z-40 backdrop-blur">
         <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <!-- Ältestenzeichen Logo -->
                 <svg class="w-10 h-10 text-gold" viewBox="0 0 100 100" fill="currentColor">
                     <polygon points="50,5 61,35 93,35 67,55 77,85 50,70 23,85 33,55 7,35 39,35" fill="none" stroke="currentColor" stroke-width="2.5"/>
                     <circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -97,40 +76,30 @@
 
     <!-- HAUPTINHALT -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-10 space-y-16">
-        
-        <!-- PROMINENTES ABENTEUER (HERVORGEHOBEN) -->
         <section id="featured-adventure-section" class="w-full">
             <div class="text-center mb-6">
                 <span class="text-xs font-cinzel tracking-widest uppercase text-gold/60 border-y border-gold/30 py-1 px-4">Im Fokus des Wahnsinns</span>
             </div>
             <div id="featured-adventure-card" class="gold-border-glow bg-cardbg p-8 md:p-12 rounded relative overflow-hidden">
-                <!-- Dezente goldene Eckornamente -->
                 <div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-gold/40"></div>
                 <div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-gold/40"></div>
                 <div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-gold/40"></div>
                 <div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-gold/40"></div>
-                
                 <div id="featured-content">
                     <h2 class="text-3xl md:text-4xl font-cinzel gold-text mb-4">Lade Hauptabenteuer...</h2>
-                    <p class="text-gold/80 italic text-lg mb-6">Bitte warten, während die Chroniken geöffnet werden.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ALLE ABENTEUER & CHARAKTERE -->
         <section class="space-y-8">
             <div class="border-b border-gold/20 pb-2">
                 <h3 class="text-2xl font-cinzel gold-text">Die Chroniken & Ermittler</h3>
                 <p class="text-sm text-gold/60">Wähle deinen Ermittler und greife auf die verzeichneten Akten zu.</p>
             </div>
-            <div id="adventures-container" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Dynamisch gefüllt -->
-            </div>
+            <div id="adventures-container" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
         </section>
-
     </main>
 
-    <!-- FOOTER -->
     <footer class="w-full border-t border-gold/20 py-6 text-center text-xs font-cinzel text-gold/50 tracking-widest mt-20">
         &bull; Das Ältestenzeichen möge euch schützen &bull;
     </footer>
@@ -140,7 +109,6 @@
         <div class="bg-cardbg gold-border w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 rounded relative shadow-2xl">
             <button onclick="closeAdmin()" class="absolute top-4 right-4 text-gold hover:text-white font-cinzel text-xl">&times;</button>
             
-            <!-- Login View -->
             <div id="admin-login-view">
                 <h3 class="text-2xl font-cinzel gold-text mb-6 text-center">Admin-Authentifizierung</h3>
                 <div class="max-w-sm mx-auto space-y-4">
@@ -153,24 +121,21 @@
                 </div>
             </div>
 
-            <!-- Panel View -->
             <div id="admin-panel-view" class="hidden space-y-8">
                 <div class="flex justify-between items-center border-b border-gold/30 pb-4">
                     <h3 class="text-2xl font-cinzel gold-text">Admin-Kontrollzentrum</h3>
                     <button onclick="logoutAdmin()" class="text-xs border border-gold/40 px-3 py-1 text-gold/80 hover:text-gold">Abmelden</button>
                 </div>
 
-                <!-- Einstellungen (YouTube Intro & JSONBin Sync) -->
                 <div class="bg-obsidian/60 p-6 rounded gold-border space-y-4">
                     <h4 class="text-lg font-cinzel gold-text">Allgemeine Einstellungen</h4>
                     <div>
-                        <label class="block text-xs font-cinzel uppercase tracking-wider text-gold/70 mb-1">YouTube Intro URL (z.B. https://www.youtube.com/watch?v=XXXXX oder Embed-Link)</label>
+                        <label class="block text-xs font-cinzel uppercase tracking-wider text-gold/70 mb-1">YouTube Intro URL</label>
                         <input type="text" id="setting-yt" class="w-full bg-obsidian border border-gold/30 p-2 text-gold text-sm rounded">
                     </div>
                     <button onclick="saveSettings()" class="px-6 py-2 bg-gold/20 border border-gold text-gold font-cinzel text-xs hover:bg-gold hover:text-obsidian transition-all">Einstellungen Speichern</button>
                 </div>
 
-                <!-- Abenteuer Verwalten -->
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-lg font-cinzel gold-text">Abenteuer verwalten</h4>
@@ -179,7 +144,6 @@
                     <div id="admin-adventures-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Charaktere Verwalten -->
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-lg font-cinzel gold-text">Charaktere verwalten</h4>
@@ -188,7 +152,6 @@
                     <div id="admin-characters-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Dokumente / Handouts Verwalten -->
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-lg font-cinzel gold-text">Dokumente & Handouts verwalten</h4>
@@ -197,125 +160,71 @@
                     <div id="admin-documents-list" class="space-y-2"></div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- MODAL: ABENTEUER BEARBEITEN/ERSTELLEN -->
+    <!-- MODALS -->
     <div id="adventure-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4">
         <div class="bg-cardbg gold-border w-full max-w-lg p-6 rounded space-y-4">
             <h4 id="adv-modal-title" class="text-xl font-cinzel gold-text">Abenteuer bearbeiten</h4>
             <input type="hidden" id="adv-id">
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Titel</label>
-                <input type="text" id="adv-title" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm">
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Beschreibung</label>
-                <textarea id="adv-desc" rows="4" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></textarea>
-            </div>
-            <div class="flex items-center gap-2">
-                <input type="checkbox" id="adv-featured" class="w-4 h-4 accent-gold">
-                <label class="text-xs font-cinzel text-gold">Als prominentes Hauptabenteuer hervorheben</label>
-            </div>
-            <div class="flex justify-end gap-2 pt-4">
-                <button onclick="closeAdventureModal()" class="px-4 py-2 border border-gold/40 text-gold text-xs">Abbrechen</button>
-                <button onclick="saveAdventure()" class="px-4 py-2 bg-gold text-obsidian font-cinzel text-xs font-bold">Speichern</button>
-            </div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Titel</label><input type="text" id="adv-title" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Beschreibung</label><textarea id="adv-desc" rows="4" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></textarea></div>
+            <div class="flex items-center gap-2"><input type="checkbox" id="adv-featured" class="w-4 h-4 accent-gold"><label class="text-xs font-cinzel text-gold">Als prominentes Hauptabenteuer hervorheben</label></div>
+            <div class="flex justify-end gap-2 pt-4"><button onclick="closeAdventureModal()" class="px-4 py-2 border border-gold/40 text-gold text-xs">Abbrechen</button><button onclick="saveAdventure()" class="px-4 py-2 bg-gold text-obsidian font-cinzel text-xs font-bold">Speichern</button></div>
         </div>
     </div>
 
-    <!-- MODAL: CHARAKTER BEARBEITEN/ERSTELLEN -->
     <div id="character-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4">
         <div class="bg-cardbg gold-border w-full max-w-lg p-6 rounded space-y-4">
             <h4 id="char-modal-title" class="text-xl font-cinzel gold-text">Charakter bearbeiten</h4>
             <input type="hidden" id="char-id">
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Name des Ermittlers</label>
-                <input type="text" id="char-name" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm">
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">zugeordnetes Abenteuer</label>
-                <select id="char-adventure" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></select>
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Portrait Bild-URL</label>
-                <input type="text" id="char-portrait" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm" placeholder="https://...">
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Link zum Charakterbogen (PDF / Google Drive / extern)</label>
-                <input type="text" id="char-sheet" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm" placeholder="https://...">
-            </div>
-            <div class="flex justify-end gap-2 pt-4">
-                <button onclick="closeCharacterModal()" class="px-4 py-2 border border-gold/40 text-gold text-xs">Abbrechen</button>
-                <button onclick="saveCharacter()" class="px-4 py-2 bg-gold text-obsidian font-cinzel text-xs font-bold">Speichern</button>
-            </div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Name des Ermittlers</label><input type="text" id="char-name" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Zugeordnetes Abenteuer</label><select id="char-adventure" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></select></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Portrait Bild-URL</label><input type="text" id="char-portrait" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Link zum Charakterbogen</label><input type="text" id="char-sheet" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div class="flex justify-end gap-2 pt-4"><button onclick="closeCharacterModal()" class="px-4 py-2 border border-gold/40 text-gold text-xs">Abbrechen</button><button onclick="saveCharacter()" class="px-4 py-2 bg-gold text-obsidian font-cinzel text-xs font-bold">Speichern</button></div>
         </div>
     </div>
 
-    <!-- MODAL: DOKUMENT BEARBEITEN/ERSTELLEN -->
     <div id="document-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4">
         <div class="bg-cardbg gold-border w-full max-w-lg p-6 rounded space-y-4">
-            <h4 id="doc-modal-title" class="text-xl font-cinzel gold-text">Dokument / Akte hinzufügen</h4>
+            <h4 id="doc-modal-title" class="text-xl font-cinzel gold-text">Dokument hinzufügen</h4>
             <input type="hidden" id="doc-id">
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Titel des Dokuments</label>
-                <input type="text" id="doc-title" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm">
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Zugeordneter Charakter (für den Spielerzugang)</label>
-                <select id="doc-character" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></select>
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Link zum Dokument (PDF / Datei / Cloud)</label>
-                <input type="text" id="doc-url" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm" placeholder="https://...">
-            </div>
-            <div>
-                <label class="block text-xs font-cinzel text-gold/70 mb-1">Individuelles Vorschaubild (Thumbnail URL)</label>
-                <input type="text" id="doc-thumb" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm" placeholder="https://...">
-            </div>
-            <div class="flex justify-end gap-2 pt-4">
-                <button onclick="closeDocumentModal()" class="px-4 py-2 border border-gold/40 text-gold text-xs">Abbrechen</button>
-                <button onclick="saveDocument()" class="px-4 py-2 bg-gold text-obsidian font-cinzel text-xs font-bold">Speichern</button>
-            </div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Titel des Dokuments</label><input type="text" id="doc-title" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Zugeordneter Charakter</label><select id="doc-character" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></select></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Link zum Dokument</label><input type="text" id="doc-url" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div><label class="block text-xs font-cinzel text-gold/70 mb-1">Individuelles Vorschaubild (Thumbnail URL)</label><input type="text" id="doc-thumb" class="w-full bg-obsidian border border-gold/30 p-2 text-gold rounded text-sm"></div>
+            <div class="flex justify-end gap-2 pt-4"><button onclick="closeDocumentModal()" class="px-4 py-2 border border-gold/40 text-gold text-xs">Abbrechen</button><button onclick="saveDocument()" class="px-4 py-2 bg-gold text-obsidian font-cinzel text-xs font-bold">Speichern</button></div>
         </div>
     </div>
 
-    <!-- SKRYPT / SYNCHRONISATION -->
     <script>
-        // Kostenloser Public JSONBin Store (Konfiguriere hier deine eigene ID oder nutze den kostenlosen Test-Bin)
-        // Um JSONBin kostenlos zu nutzen: Registriere dich auf jsonbin.io, erstelle einen Bin und trage ihn hier ein.
-        // Falls du noch keinen hast, läuft es zum Testen lokal im localStorage.
-        const BIN_ID = localStorage.getItem('6af08badffd5d16053b12ab4') || ''; 
-        const API_KEY = localStorage.getItem('$2a$10$8gg1IBGv1MLEaznIasBvUO4Eftw2SwyLmvmcN/50.WqnTIpfqYZQe') || '';
+        // TRAGE HIER DEINE JSONBIN CREDENTIALS EIN (Falls du JSONBin nutzt)
+        const BIN_ID = "6af08badffd5d16053b12ab4"; 
+        const API_KEY = "$2a$10$8gg1IBGv1MLEaznIasBvUO4Eftw2SwyLmvmcN/50.WqnTIpfqYZQe";
 
-        // Standard-Datenstruktur
         let db = {
-            settings: {
-                youtubeUrl: "https://www.youtube.com/watch?v=JWImZexOj94"
-            },
+            settings: { youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
             adventures: [
-                { id: "1", title: "Schatten über Innsmouth", description: "Ein verfallenes Küstendorf voller Geheimnisse, finsterer Kulte und amphibischer Schrecken.", featured: true }
+                { id: "1", title: "Dunkle Resonanz", description: "1986 - nordöstlich von Nischnejansk", featured: true }
             ],
-            characters: [
-                { id: "c1", adventureId: "1", name: "Prof. Henry Armitage", portrait: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80", sheetUrl: "#", selectedBy: null }
-            ],
-            documents: [
-                { id: "d1", characterId: "c1", title: "Altes Tagebuch von 1922", url: "#", thumb: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=300&q=80" }
-            ]
+            characters: [],
+            documents: []
         };
 
-        // Daten laden (lokal oder von JSONBin wenn eingerichtet)
         async function loadData() {
-            if (BIN_ID && API_KEY) {
+            if (BIN_ID && BIN_ID !== "HIER_DEINE_BIN_ID_EINTRAGEN" && API_KEY) {
                 try {
                     let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
                         headers: { 'X-Master-Key': API_KEY }
                     });
                     let data = await res.json();
-                    if (data && data.record) db = data.record;
+                    if (data && data.record) {
+                        db = data.record;
+                    }
                 } catch (e) {
-                    console.error("Ladefehler, nutze lokalen Speicher", e);
+                    console.error("Cloud-Ladefehler, nutze lokales Fallback", e);
                 }
             } else {
                 let local = localStorage.getItem('cthulhu_db');
@@ -325,19 +234,21 @@
         }
 
         async function saveDataToCloud() {
-            if (BIN_ID && API_KEY) {
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                    body: JSON.stringify(db)
-                });
-            } else {
-                localStorage.setItem('cthulhu_db', JSON.stringify(db));
+            if (BIN_ID && BIN_ID !== "HIER_DEINE_BIN_ID_EINTRAGEN" && API_KEY) {
+                try {
+                    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                        body: JSON.stringify(db)
+                    });
+                } catch (e) {
+                    console.error("Cloud-Speicherfehler", e);
+                }
             }
+            localStorage.setItem('cthulhu_db', JSON.stringify(db));
             renderApp();
         }
 
-        // YouTube Intro Logik
         function initIntro() {
             if (sessionStorage.getItem('intro_skipped')) {
                 document.getElementById('intro-overlay').style.display = 'none';
@@ -364,12 +275,9 @@
             setTimeout(() => overlay.style.display = 'none', 1000);
         }
 
-        // Rendern der Website
         function renderApp() {
-            // Intro URL ins Admin-Feld
             document.getElementById('setting-yt').value = db.settings.youtubeUrl || '';
 
-            // Featured Adventure
             let featuredCard = document.getElementById('featured-content');
             let featuredAdv = db.adventures.find(a => a.featured) || db.adventures[0];
             if (featuredAdv) {
@@ -382,7 +290,6 @@
                 featuredCard.innerHTML = `<h2 class="text-2xl font-cinzel gold-text">Kein Abenteuer hervorgehoben</h2>`;
             }
 
-            // Abenteuer & Charaktere Grid
             let advContainer = document.getElementById('adventures-container');
             advContainer.innerHTML = '';
 
@@ -423,9 +330,7 @@
                             ${isSelected && docs.length > 0 ? `
                                 <div class="mt-4 pt-3 border-t border-gold/20 space-y-2">
                                     <p class="text-xs font-cinzel uppercase tracking-widest text-gold/70">Hinterlegte Akten & Dokumente:</p>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                        ${docsHtml}
-                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${docsHtml}</div>
                                 </div>
                             ` : ''}
                         </div>
@@ -443,23 +348,16 @@
                     </div>
                 `;
             });
-
             renderAdminLists();
         }
 
-        // Charakter auswählen / freigeben
         function toggleSelectCharacter(id) {
             let char = db.characters.find(c => c.id === id);
             if (!char) return;
-            if (char.selectedBy) {
-                char.selectedBy = null;
-            } else {
-                char.selectedBy = "Aktiv";
-            }
+            char.selectedBy = char.selectedBy ? null : "Aktiv";
             saveDataToCloud();
         }
 
-        // --- ADMIN LOGIN & PANEL ---
         function openAdminLogin() {
             document.getElementById('admin-modal').classList.remove('hidden');
             if (localStorage.getItem('cthulhu_is_admin') === 'true') {
@@ -470,13 +368,10 @@
             }
         }
 
-        function closeAdmin() {
-            document.getElementById('admin-modal').classList.add('hidden');
-        }
+        function closeAdmin() { document.getElementById('admin-modal').classList.add('hidden'); }
 
         function verifyAdmin() {
             let code = document.getElementById('admin-code-input').value;
-            // Einfacher Admin-Code (kannst du hier anpassen, z.B. "cthulhu1920")
             if (code === "cthulhu1920" || code === "admin") {
                 localStorage.setItem('cthulhu_is_admin', 'true');
                 showAdminPanel();
@@ -502,53 +397,35 @@
             alert('Einstellungen gespeichert!');
         }
 
-        // Admin Listen Rendering & CRUD
         function renderAdminLists() {
-            // Dropdown in Charakter & Dokument Modals
             let advSelect = document.getElementById('char-adventure');
             advSelect.innerHTML = db.adventures.map(a => `<option value="${a.id}">${a.title}</option>`).join('');
 
             let charSelect = document.getElementById('doc-character');
             charSelect.innerHTML = db.characters.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 
-            // Abenteuer Liste
             document.getElementById('admin-adventures-list').innerHTML = db.adventures.map(a => `
                 <div class="flex justify-between items-center bg-obsidian p-2 rounded border border-gold/20 text-sm">
-                    <div>
-                        <span class="font-cinzel gold-text">${a.title}</span>
-                        ${a.featured ? '<span class="ml-2 text-[10px] bg-gold text-obsidian px-1 rounded font-bold">Fokus</span>' : ''}
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="editAdventure('${a.id}')" class="text-xs text-gold underline">Bearbeiten</button>
-                        <button onclick="deleteAdventure('${a.id}')" class="text-xs text-red-400">Löschen</button>
-                    </div>
+                    <div><span class="font-cinzel gold-text">${a.title}</span> ${a.featured ? '<span class="ml-2 text-[10px] bg-gold text-obsidian px-1 rounded font-bold">Fokus</span>' : ''}</div>
+                    <div class="flex gap-2"><button onclick="editAdventure('${a.id}')" class="text-xs text-gold underline">Bearbeiten</button><button onclick="deleteAdventure('${a.id}')" class="text-xs text-red-400">Löschen</button></div>
                 </div>
             `).join('');
 
-            // Charaktere Liste
             document.getElementById('admin-characters-list').innerHTML = db.characters.map(c => `
                 <div class="flex justify-between items-center bg-obsidian p-2 rounded border border-gold/20 text-sm">
                     <span class="font-cinzel gold-text">${c.name}</span>
-                    <div class="flex gap-2">
-                        <button onclick="editCharacter('${c.id}')" class="text-xs text-gold underline">Bearbeiten</button>
-                        <button onclick="deleteCharacter('${c.id}')" class="text-xs text-red-400">Löschen</button>
-                    </div>
+                    <div class="flex gap-2"><button onclick="editCharacter('${c.id}')" class="text-xs text-gold underline">Bearbeiten</button><button onclick="deleteCharacter('${c.id}')" class="text-xs text-red-400">Löschen</button></div>
                 </div>
             `).join('');
 
-            // Dokumente Liste
             document.getElementById('admin-documents-list').innerHTML = db.documents.map(d => `
                 <div class="flex justify-between items-center bg-obsidian p-2 rounded border border-gold/20 text-sm">
                     <span class="font-cinzel gold-text">${d.title}</span>
-                    <div class="flex gap-2">
-                        <button onclick="editDocument('${d.id}')" class="text-xs text-gold underline">Bearbeiten</button>
-                        <button onclick="deleteDocument('${d.id}')" class="text-xs text-red-400">Löschen</button>
-                    </div>
+                    <div class="flex gap-2"><button onclick="editDocument('${d.id}')" class="text-xs text-gold underline">Bearbeiten</button><button onclick="deleteDocument('${d.id}')" class="text-xs text-red-400">Löschen</button></div>
                 </div>
             `).join('');
         }
 
-        // --- ABENTEUER CRUD ---
         function openAdventureModal(id = null) {
             document.getElementById('adventure-modal').classList.remove('hidden');
             if (id) {
@@ -572,11 +449,7 @@
             let title = document.getElementById('adv-title').value;
             let desc = document.getElementById('adv-desc').value;
             let featured = document.getElementById('adv-featured').checked;
-
-            if (featured) {
-                db.adventures.forEach(a => a.featured = false); // Nur eins kann featured sein
-            }
-
+            if (featured) db.adventures.forEach(a => a.featured = false);
             if (id) {
                 let a = db.adventures.find(x => x.id === id);
                 a.title = title; a.description = desc; a.featured = featured;
@@ -587,14 +460,8 @@
             closeAdventureModal();
         }
         function editAdventure(id) { openAdventureModal(id); }
-        function deleteAdventure(id) {
-            if (confirm("Wirklich löschen?")) {
-                db.adventures = db.adventures.filter(x => x.id !== id);
-                saveDataToCloud();
-            }
-        }
+        function deleteAdventure(id) { if (confirm("Wirklich löschen?")) { db.adventures = db.adventures.filter(x => x.id !== id); saveDataToCloud(); } }
 
-        // --- CHARAKTER CRUD ---
         function openCharacterModal(id = null) {
             renderAdminLists();
             document.getElementById('character-modal').classList.remove('hidden');
@@ -621,7 +488,6 @@
             let adventureId = document.getElementById('char-adventure').value;
             let portrait = document.getElementById('char-portrait').value;
             let sheetUrl = document.getElementById('char-sheet').value;
-
             if (id) {
                 let c = db.characters.find(x => x.id === id);
                 c.name = name; c.adventureId = adventureId; c.portrait = portrait; c.sheetUrl = sheetUrl;
@@ -632,14 +498,8 @@
             closeCharacterModal();
         }
         function editCharacter(id) { openCharacterModal(id); }
-        function deleteCharacter(id) {
-            if (confirm("Wirklich löschen?")) {
-                db.characters = db.characters.filter(x => x.id !== id);
-                saveDataToCloud();
-            }
-        }
+        function deleteCharacter(id) { if (confirm("Wirklich löschen?")) { db.characters = db.characters.filter(x => x.id !== id); saveDataToCloud(); } }
 
-        // --- DOKUMENT CRUD ---
         function openDocumentModal(id = null) {
             renderAdminLists();
             document.getElementById('document-modal').classList.remove('hidden');
@@ -664,27 +524,20 @@
             let id = document.getElementById('doc-id').value;
             let title = document.getElementById('doc-title').value;
             let characterId = document.getElementById('doc-character').value;
-            let url = document.getElementById('doc-url5') || document.getElementById('doc-url').value;
+            let url = document.getElementById('doc-url').value;
             let thumb = document.getElementById('doc-thumb').value;
-
             if (id) {
                 let d = db.documents.find(x => x.id === id);
-                d.title = title; d.characterId = characterId; d.url = document.getElementById('doc-url').value; d.thumb = thumb;
+                d.title = title; d.characterId = characterId; d.url = url; d.thumb = thumb;
             } else {
-                db.documents.push({ id: 'd_' + Date.now(), characterId, title, url: document.getElementById('doc-url').value, thumb });
+                db.documents.push({ id: 'd_' + Date.now(), characterId, title, url, thumb });
             }
             saveDataToCloud();
             closeDocumentModal();
         }
         function editDocument(id) { openDocumentModal(id); }
-        function deleteDocument(id) {
-            if (confirm("Wirklich löschen?")) {
-                db.documents = db.documents.filter(x => x.id !== id);
-                saveDataToCloud();
-            }
-        }
+        function deleteDocument(id) { if (confirm("Wirklich löschen?")) { db.documents = db.documents.filter(x => x.id !== id); saveDataToCloud(); } }
 
-        // Start beim Laden
         window.onload = () => {
             initIntro();
             loadData();
