@@ -66,7 +66,7 @@
             <div class="corner-ornament corner-br"></div>
             <iframe id="intro-iframe" class="w-full h-full border-0" src="https://www.youtube.com/embed/JWImZexOj94" title="Cthulhu Intro" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <button onclick="skipIntro()" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase">
+        <button id="skip-btn" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase cursor-pointer">
             Prolog überspringen & Akten öffnen →
         </button>
     </div>
@@ -87,7 +87,7 @@
             <p class="text-stone-400 italic text-sm md:text-base">"Es ist nicht tot, was ewig liegt, bis dass die Zeit den Tod besiegt."</p>
             
             <div class="absolute top-0 right-0 flex gap-3">
-                <button onclick="openAdminModal()" class="text-xs font-cinzel border border-gold-500/50 px-3 py-1.5 text-gold-400 hover:bg-gold-500/20 transition-all">
+                <button onclick="openAdminModal()" class="text-xs font-cinzel border border-gold-500/50 px-3 py-1.5 text-gold-400 hover:bg-gold-500/20 transition-all cursor-pointer">
                     Spielleiter-Bereich
                 </button>
             </div>
@@ -147,22 +147,22 @@
                 <p class="text-sm mb-4 text-stone-400">Geben Sie das Geheimwort ein, um Zugriff auf die Aktenverwaltung zu erhalten.</p>
                 <input type="password" id="admin-pass" placeholder="Geheimwort (admin)" class="w-full bg-black border border-gold-500/50 p-2 text-stone-200 mb-4 focus:outline-none focus:border-gold-500">
                 <div class="flex justify-end gap-3">
-                    <button onclick="closeAdminModal()" class="px-4 py-2 text-xs font-cinzel border border-stone-600 text-stone-400">Abbrechen</button>
-                    <button onclick="checkAdminLogin()" class="px-4 py-2 text-xs font-cinzel bg-gold-500 text-black font-bold hover:bg-gold-400">Einlass gewähren</button>
+                    <button onclick="closeAdminModal()" class="px-4 py-2 text-xs font-cinzel border border-stone-600 text-stone-400 cursor-pointer">Abbrechen</button>
+                    <button onclick="checkAdminLogin()" class="px-4 py-2 text-xs font-cinzel bg-gold-500 text-black font-bold hover:bg-gold-400 cursor-pointer">Einlass gewähren</button>
                 </div>
             </div>
 
             <div id="admin-panel-view" class="hidden space-y-6">
                 <div class="flex justify-between items-center border-b border-gold-500/30 pb-3">
                     <h3 class="text-xl font-cinzel text-gold-400">Spielleiter-Schaltzentrale</h3>
-                    <button onclick="closeAdminModal()" class="text-gold-400 hover:text-white text-sm font-cinzel">[ Schließen ]</button>
+                    <button onclick="closeAdminModal()" class="text-gold-400 hover:text-white text-sm font-cinzel cursor-pointer">[ Schließen ]</button>
                 </div>
 
                 <!-- Intro Video Einstellungen -->
                 <div>
                     <h4 class="text-sm font-cinzel text-gold-400 mb-2">YouTube-Intro URL (Embed Format)</h4>
                     <input type="text" id="admin-intro-url" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300 mb-2">
-                    <button onclick="saveIntroUrl()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black">Intro-Link sichern</button>
+                    <button onclick="saveIntroUrl()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black cursor-pointer">Intro-Link sichern</button>
                 </div>
 
                 <!-- Abenteuer anlegen -->
@@ -171,7 +171,7 @@
                     <div class="space-y-2">
                         <input type="text" id="new-adv-title" placeholder="Titel des Abenteuers" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300">
                         <textarea id="new-adv-desc" placeholder="Beschreibung / Fallakte" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300 h-20"></textarea>
-                        <button onclick="addAdventure()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black">Abenteuer hinzufügen</button>
+                        <button onclick="addAdventure()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black cursor-pointer">Abenteuer hinzufügen</button>
                     </div>
                 </div>
 
@@ -181,7 +181,7 @@
                     <div class="space-y-2">
                         <input type="text" id="new-doc-name" placeholder="Dokumentenname (z.B. Offizieller Regel-Schnellstart)" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300">
                         <input type="text" id="new-doc-url" placeholder="Link (z.B. Google Drive / Dropbox URL)" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300">
-                        <button onclick="addDocument()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black">Dokument hinzufügen</button>
+                        <button onclick="addDocument()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black cursor-pointer">Dokument hinzufügen</button>
                     </div>
                 </div>
 
@@ -200,8 +200,8 @@
             <h3 id="edit-modal-title" class="text-xl font-cinzel text-gold-400 mb-4">Eintrag bearbeiten</h3>
             <div id="edit-modal-body" class="space-y-3 mb-4"></div>
             <div class="flex justify-end gap-3">
-                <button onclick="closeEditModal()" class="px-4 py-2 text-xs font-cinzel border border-stone-600 text-stone-400">Abbrechen</button>
-                <button onclick="saveEditModal()" class="px-4 py-2 text-xs font-cinzel bg-gold-500 text-black font-bold">Änderungen speichern</button>
+                <button onclick="closeEditModal()" class="px-4 py-2 text-xs font-cinzel border border-stone-600 text-stone-400 cursor-pointer">Abbrechen</button>
+                <button onclick="saveEditModal()" class="px-4 py-2 text-xs font-cinzel bg-gold-500 text-black font-bold cursor-pointer">Änderungen speichern</button>
             </div>
         </div>
     </div>
@@ -241,6 +241,9 @@
             if (iframe) iframe.src = "";
         }
 
+        // Direktes Event-Binding für den Überspringen-Button
+        document.getElementById('skip-btn').addEventListener('click', skipIntro);
+
         const iframeElem = document.getElementById('intro-iframe');
         if (iframeElem) {
             iframeElem.src = appData.introUrl || "https://www.youtube.com/embed/JWImZexOj94";
@@ -257,7 +260,8 @@
                             <img src="${c.portrait || 'https://via.placeholder.com/60'}" class="w-12 h-12 object-cover border border-gold-500/50 rounded flex-shrink-0" alt="Portrait">
                             <div>
                                 <span class="font-cinzel text-gold-400 text-sm font-bold block">${c.name}</span>
-                                <span class="text-xs text-stone-400 block">${c.role}</span>${c.docUrl && c.docUrl !== '#' ? `<a href="${c.docUrl}" target="_blank" class="text-xs text-gold-500 underline mt-1 inline-block">📄 ${c.docName || 'Charakter-Dokument'}</a>` : ''}
+                                <span class="text-xs text-stone-400 block">${c.role}</span>
+                                ${c.docUrl && c.docUrl !== '#' ? `<a href="${c.docUrl}" target="_blank" class="text-xs text-gold-500 underline mt-1 inline-block">📄 ${c.docName || 'Charakter-Dokument'}</a>` : ''}
                             </div>
                         </div>
                         <div class="w-full sm:w-auto flex justify-end">
@@ -265,7 +269,7 @@
                                 `<span class="text-xs text-red-400 italic">Besetzt von: ${c.selectedBy}</span>` :
                                 `<div class="flex gap-2 items-center w-full sm:w-auto">
                                     <input type="text" id="name-${c.id}" placeholder="Ihr Name..." class="bg-black border border-gold-500/40 text-xs px-2 py-1 text-stone-200 w-full sm:w-28 focus:outline-none">
-                                    <button onclick="selectChar('${featuredAdv.id}', '${c.id}')" class="px-3 py-1 bg-gold-500 text-black text-xs font-cinzel font-bold hover:bg-gold-400 whitespace-nowrap">Wählen</button>
+                                    <button onclick="selectChar('${featuredAdv.id}', '${c.id}')" class="px-3 py-1 bg-gold-500 text-black text-xs font-cinzel font-bold hover:bg-gold-400 whitespace-nowrap cursor-pointer">Wählen</button>
                                  </div>`
                             }
                         </div>
@@ -288,4 +292,209 @@
                     <div class="corner-ornament corner-tl"></div>
                     <div class="corner-ornament corner-tr"></div>
                     <div class="corner-ornament corner-bl"></div>
-                    <div class="corner-
+                    <div class="corner-ornament corner-br"></div>
+                    <div>
+                        <h3 class="text-xl font-cinzel text-gold-400 mb-2">${adv.title}</h3>
+                        <p class="text-stone-400 text-xs mb-4">${adv.description}</p>
+                        <div class="space-y-2 mb-4">
+                            ${adv.characters.map(c => `
+                                <div class="text-xs flex justify-between items-center border-b border-stone-800 pb-1">
+                                    <span class="${c.selectedBy ? 'line-through text-stone-600' : 'text-stone-300'}">${c.name} (${c.role})</span>
+                                    ${c.selectedBy ? `<span class="text-red-400">[${c.selectedBy}]</span>` : `<span class="text-gold-500/70">Frei</span>`}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <button onclick="setFeatured('${adv.id}')" class="w-full py-1.5 text-xs font-cinzel border border-gold-500/50 text-gold-400 hover:bg-gold-500 hover:text-black transition-all cursor-pointer">
+                        Als Hauptakte hervorheben
+                    </button>
+                </div>
+            `).join('');
+
+            const docContainer = document.getElementById('documents-list');
+            docContainer.innerHTML = appData.documents.map(doc => `
+                <a href="${doc.url}" target="_blank" class="flex items-center gap-3 p-3 bg-black/50 border border-gold-500/30 hover:border-gold-500 transition-all rounded group">
+                    <svg class="w-5 h-5 text-gold-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span class="text-xs text-stone-300 group-hover:text-gold-400 transition-colors">${doc.name}</span>
+                </a>
+            `).join('');
+        }
+
+        function selectChar(advId, charId) {
+            const input = document.getElementById(`name-${charId}`);
+            const playerName = input.value.trim();
+            if(!playerName) {
+                alert('Bitte geben Sie Ihren Namen ein.');
+                return;
+            }
+            const adv = appData.adventures.find(a => a.id === advId);
+            const char = adv.characters.find(c => c.id === charId);
+            char.selectedBy = playerName;
+            saveData();
+        }
+
+        function setFeatured(id) {
+            appData.featuredId = id;
+            saveData();
+        }
+
+        function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+            document.getElementById('admin-pass').value = '';
+            document.getElementById('admin-login-view').classList.remove('hidden');
+            document.getElementById('admin-panel-view').classList.add('hidden');
+        }
+        function checkAdminLogin() {
+            if(document.getElementById('admin-pass').value === 'admin') {
+                document.getElementById('admin-login-view').classList.add('hidden');
+                document.getElementById('admin-panel-view').classList.remove('hidden');
+                document.getElementById('admin-intro-url').value = appData.introUrl;
+                renderAdminPanel();
+            } else {
+                alert('Falsches Geheimwort.');
+            }
+        }
+        function saveIntroUrl() {
+            const url = document.getElementById('admin-intro-url').value.trim();
+            if(url) {
+                appData.introUrl = url;
+                const iframe = document.getElementById('intro-iframe');
+                if (iframe) iframe.src = url;
+                saveData();
+                alert('Intro-Link aktualisiert.');
+            }
+        }
+        function addAdventure() {
+            const title = document.getElementById('new-adv-title').value.trim();
+            const desc = document.getElementById('new-adv-desc').value.trim();
+            if(!title) return;
+            appData.adventures.push({
+                id: 'adv-' + Date.now(),
+                title, description: desc,
+                characters: [{ id: 'c-' + Date.now(), name: 'Ermittler 1', role: 'Detektiv', portrait: '', docName: '', docUrl: '', selectedBy: null }]
+            });
+            document.getElementById('new-adv-title').value = '';
+            document.getElementById('new-adv-desc').value = '';
+            saveData();
+            renderAdminPanel();
+        }
+        function addDocument() {
+            const name = document.getElementById('new-doc-name').value.trim();
+            const url = document.getElementById('new-doc-url').value.trim();
+            if(!name || !url) return;
+            appData.documents.push({ name, url });
+            document.getElementById('new-doc-name').value = '';
+            document.getElementById('new-doc-url').value = '';
+            saveData();
+            alert('Dokument hinzugefügt.');
+        }
+        function addCharToAdv(advId) {
+            const name = prompt("Name des Charakters:");
+            const role = prompt("Rolle / Beruf:");
+            if(!name) return;
+            const adv = appData.adventures.find(a => a.id === advId);
+            adv.characters.push({ id: 'c-' + Date.now(), name, role, portrait: '', docName: '', docUrl: '', selectedBy: null });
+            saveData();
+            renderAdminPanel();
+        }
+        function deleteAdv(advId) {
+            appData.adventures = appData.adventures.filter(a => a.id !== advId);
+            saveData();
+            renderAdminPanel();
+        }
+        function removeChar(advId, charId) {
+            const adv = appData.adventures.find(a => a.id === advId);
+            adv.characters = adv.characters.filter(c => c.id !== charId);
+            saveData();
+            renderAdminPanel();
+        }
+
+        function editAdventure(advId) {
+            const adv = appData.adventures.find(a => a.id === advId);
+            editContext = { type: 'adventure', id: advId };
+            document.getElementById('edit-modal-title').innerText = "Abenteuer bearbeiten";
+            document.getElementById('edit-modal-body').innerHTML = `
+                <label class="text-xs text-gold-400">Titel</label>
+                <input type="text" id="edit-adv-title" value="${adv.title}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
+                <label class="text-xs text-gold-400">Beschreibung</label>
+                <textarea id="edit-adv-desc" class="w-full bg-black border border-gold-500 p-2 text-xs text-white h-24">${adv.description}</textarea>
+            `;
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function editCharacter(advId, charId) {
+            const adv = appData.adventures.find(a => a.id === advId);
+            const char = adv.characters.find(c => c.id === charId);
+            editContext = { type: 'character', advId, charId };
+            document.getElementById('edit-modal-title').innerText = "Ermittler bearbeiten";
+            document.getElementById('edit-modal-body').innerHTML = `
+                <label class="text-xs text-gold-400">Name</label>
+                <input type="text" id="edit-char-name" value="${char.name}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
+                <label class="text-xs text-gold-400">Rolle / Beruf</label>
+                <input type="text" id="edit-char-role" value="${char.role}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
+                <label class="text-xs text-gold-400">Portrait Bild-URL</label>
+                <input type="text" id="edit-char-portrait" value="${char.portrait || ''}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
+                <label class="text-xs text-gold-400">Dokument-Name (z.B. Charakterbogen PDF)</label>
+                <input type="text" id="edit-char-docname" value="${char.docName || ''}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white mb-2">
+                <label class="text-xs text-gold-400">Dokument-Link (URL)</label>
+                <input type="text" id="edit-char-docurl" value="${char.docUrl || ''}" class="w-full bg-black border border-gold-500 p-2 text-xs text-white">
+            `;
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            editContext = null;
+        }
+
+        function saveEditModal() {
+            if(editContext.type === 'adventure') {
+                const adv = appData.adventures.find(a => a.id === editContext.id);
+                adv.title = document.getElementById('edit-adv-title').value;
+                adv.description = document.getElementById('edit-adv-desc').value;
+            } else if(editContext.type === 'character') {
+                const adv = appData.adventures.find(a => a.id === editContext.advId);
+                const char = adv.characters.find(c => c.id === editContext.charId);
+                char.name = document.getElementById('edit-char-name').value;
+                char.role = document.getElementById('edit-char-role').value;
+                char.portrait = document.getElementById('edit-char-portrait').value;
+                char.docName = document.getElementById('edit-char-docname').value;
+                char.docUrl = document.getElementById('edit-char-docurl').value;
+            }
+            saveData();
+            closeEditModal();
+            renderAdminPanel();
+        }
+
+        function renderAdminPanel() {
+            const container = document.getElementById('admin-adventures-container');
+            container.innerHTML = appData.adventures.map(adv => `
+                <div class="border border-gold-500/30 bg-black p-3 rounded text-xs space-y-2">
+                    <div class="flex justify-between items-center border-b border-stone-800 pb-1">
+                        <span class="font-cinzel text-gold-400 font-bold text-sm">${adv.title}</span>
+                        <div class="flex gap-2">
+                            <button onclick="editAdventure('${adv.id}')" class="text-gold-400 underline cursor-pointer">Akte bearbeiten</button>
+                            <button onclick="addCharToAdv('${adv.id}')" class="text-gold-400 underline cursor-pointer">+ Charakter</button>
+                            <button onclick="deleteAdv('${adv.id}')" class="text-red-400 underline cursor-pointer">Löschen</button>
+                        </div>
+                    </div>
+                    <div class="pl-2 space-y-1">
+                        ${adv.characters.map(c => `
+                            <div class="text-stone-400 flex justify-between items-center py-0.5">
+                                <span>- ${c.name} (${c.role}) ${c.selectedBy ? '[Besetzt: ' + c.selectedBy + ']' : ''}</span>
+                                <div class="flex gap-2">
+                                    <button onclick="editCharacter('${adv.id}', '${c.id}')" class="text-gold-400 underline cursor-pointer">Bearbeiten</button>
+                                    <button onclick="removeChar('${adv.id}', '${c.id}')" class="text-red-500 hover:text-red-300 cursor-pointer">Entfernen</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        render();
+    </script>
+</body>
+</html>
