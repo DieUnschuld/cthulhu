@@ -200,7 +200,7 @@
     </div>
 
     <script>
-        // TRAGE HIER DEINE JSONBIN CREDENTIALS EIN (Falls du JSONBin nutzt)
+        // Hier sind deine JSONBin Zugangsdaten fest hinterlegt:
         const BIN_ID = "6af08badffd5d16053b12ab4"; 
         const API_KEY = "$2a$10$8gg1IBGv1MLEaznIasBvUO4Eftw2SwyLmvmcN/50.WqnTIpfqYZQe";
 
@@ -214,7 +214,7 @@
         };
 
         async function loadData() {
-            if (BIN_ID && BIN_ID !== "HIER_DEINE_BIN_ID_EINTRAGEN" && API_KEY) {
+            if (BIN_ID && API_KEY) {
                 try {
                     let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
                         headers: { 'X-Master-Key': API_KEY }
@@ -234,7 +234,7 @@
         }
 
         async function saveDataToCloud() {
-            if (BIN_ID && BIN_ID !== "HIER_DEINE_BIN_ID_EINTRAGEN" && API_KEY) {
+            if (BIN_ID && API_KEY) {
                 try {
                     await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                         method: 'PUT',
