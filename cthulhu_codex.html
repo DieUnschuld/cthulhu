@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cthulhu • Die Chronik des Mythos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bookBlack: '#060608',
+                        bookPanel: '#0e0e12',
+                        bookBorder: '#bfa14f',
+                        bookGold: '#d4af37',
+                        bookGoldLight: '#f6ecbf',
+                        bookMuted: '#7d7d8e',
+                        mythosRed: '#5c1d1d'
+                    },
+                    fontFamily: {
+                        cinzelDeco: ['"Cinzel Decorative"', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        garamond: ['"EB Garamond"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #060608;
+            color: #dcdce4;
+            font-family: 'EB Garamond', serif;
+            background-image: radial-gradient(circle at center, #12121a 0%, #060608 100%);
+            min-height: 100vh;
+        }
+        .gold-border {
+            border: 1px solid #bfa14f;
+            box-shadow: inset 0 0 20px rgba(191, 161, 79, 0.12), 0 0 25px rgba(0,0,0,0.85);
+        }
+        .gold-border-glow {
+            border: 1.5px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.25), inset 0 0 25px rgba(212, 175, 55, 0.15);
+        }
+        .gold-text {
+            color: #d4af37;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.95);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #f6ecbf 0%, #d4af37 40%, #997a15 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Filigrane Ecken-Ornamente */
+        .corner-ornament {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='%23d4af37'%3E%3Cpath d='M2 2h36v36H2z' fill='none' stroke='%23d4af37' stroke-width='1.5'/%3E%3Ccircle cx='10' cy='10' r='3'/%3E%3Cpath d='M10 10h20M10 10v20' stroke='%23d4af37' stroke-width='1.5'/%3E%3C/svg%3E");
+            background-size: contain;
+        }
+        .corner-tl { top: -1px; left: -1px; }
+        .corner-tr { top: -1px; right: -1px; transform: scaleX(-1); }
+        .corner-bl { bottom: -1px; left: -1px; transform: scaleY(-1); }
+        .corner-br { bottom: -1px; right: -1px; transform: scale(-1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #060608; }
+        ::-webkit-scrollbar-thumb { background: #bfa14f; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f6ecbf; }
+    </style>
+</head>
+<body class="flex flex-col min-h-full">
+
+    <!-- Benachrichtigungs-Box -->
+    <div id="notification-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm hidden">
+        <div class="relative bg-bookPanel gold-border p-8 max-w-md w-full mx-4 text-center rounded shadow-2xl">
+            <div class="corner-ornament corner-tl"></div>
+            <div class="corner-ornament corner-tr"></div>
+            <div class="corner-ornament corner-bl"></div>
+            <div class="corner-ornament corner-br"></div>
+            
+            <div class="text-3xl text-bookGold mb-3">
+                <!-- Älteres Zeichen als Icon -->
+                <svg class="w-10 h-10 mx-auto text-bookGold" viewBox="0 0 100 100" fill="currentColor">
+                    <polygon points="50,5 61,35 93,35 67,55 77,85 50,70 23,85 33,55 7,35 39,35" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="3"/>
+                </svg>
+            </div>
+            <h3 id="modal-title" class="font-cinzel text-lg text-bookGold font-bold tracking-widest mb-2">Mitteilung aus den Akten</h3>
+            <p id="modal-message" class="font-garamond text-bookMuted mb-6 text-base leading-relaxed"></p>
+            <button onclick="closeModal()" class="px-6 py-2 bg-gradient-to-r from-yellow-800 via-amber-700 to-yellow-800 text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:brightness-110 transition shadow-lg">
+                Begreifen
+            </button>
+        </div>
+    </div>
+
+    <!-- YouTube Intro Overlay -->
+    <div id="intro-overlay" class="fixed inset-0 z-40 bg-bookBlack flex flex-col items-center justify-center p-4 transition-opacity duration-1000">
+        <div class="relative w-full max-w-4xl aspect-video gold-border rounded overflow-hidden bg-black shadow-2xl mb-6">
+            <div class="corner-ornament corner-tl"></div>
+            <div class="corner-ornament corner-tr"></div>
+            <div class="corner-ornament corner-bl"></div>
+            <div class="corner-ornament corner-br"></div>
+            <div id="youtube-player-container" class="w-full h-full"></div>
+        </div>
+        <button onclick="skipIntro()" class="px-8 py-3 bg-transparent gold-border gold-text font-cinzel text-xs font-semibold tracking-[0.2em] rounded hover:bg-bookGold/10 transition flex items-center gap-2 group">
+            <span>Prolog überspringen & Akten öffnen</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+        </button>
+    </div>
+
+    <!-- Haupt-Container -->
+    <div id="main-app" class="flex-1 flex flex-col opacity-0 transition-opacity duration-1000 hidden">
+        
+        <!-- Header -->
+        <header class="bg-bookPanel border-b border-bookBorder py-5 px-4 md:px-12 relative shadow-lg">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left flex items-center gap-4">
+                    <!-- Goldenes Älteres Zeichen Logo -->
+                    <svg class="w-10 h-10 text-bookGold flex-shrink-0" viewBox="0 0 100 100" fill="currentColor" title="Das Ältere Zeichen">
+                        <polygon points="50,5 61,35 93,35 67,55 77,85 50,70 23,85 33,55 7,35 39,35" fill="none" stroke="currentColor" stroke-width="4"/>
+                        <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="50" cy="50" r="4" fill="currentColor"/>
+                    </svg>
+                    <div>
+                        <span class="text-[10px] tracking-[0.25em] text-bookMuted font-cinzel block uppercase">Miskatonic Universitäts-Archiv</span>
+                        <h1 class="font-cinzelDeco text-xl md:text-2xl gold-gradient-text tracking-wider">DIE CHRONIK DES MYTHOS</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="switchView('home')" id="nav-home-btn" class="px-4 py-2 font-cinzel text-xs tracking-wider gold-text border border-bookBorder/50 rounded bg-bookBlack/50 hover:bg-bookGold/20 transition flex items-center gap-2">
+                        <i class="fa-solid fa-book-skull"></i> Aktenübersicht
+                    </button>
+                    <button onclick="openAdminLogin()" id="nav-admin-btn" class="px-4 py-2 font-cinzel text-xs tracking-wider text-bookMuted border border-bookBorder/30 rounded bg-bookBlack/50 hover:text-bookGold hover:border-bookBorder transition flex items-center gap-2">
+                        <i class="fa-solid fa-key"></i> <span id="admin-btn-text">Spielleiter-Bereich</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hauptinhalt -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8">
+
+            <!-- ANSICHT 1: HOME -->
+            <section id="view-home" class="space-y-12">
+                
+                <!-- Prominent Hervorgehobenes Abenteuer mit Älteres Zeichen Motiv -->
+                <div id="featured-adventure-container" class="relative bg-bookPanel gold-border-glow rounded p-6 md:p-10 overflow-hidden shadow-2xl">
+                    <div class="corner-ornament corner-tl"></div>
+                    <div class="corner-ornament corner-tr"></div>
+                    <div class="corner-ornament corner-bl"></div>
+                    <div class="corner-ornament corner-br"></div>
+                    
+                    <div id="featured-content">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+
+                <!-- Weitere Abenteuer -->
+                <div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="h-[1px] flex-1 bg-bookBorder/30"></div>
+                        <h2 class="font-cinzel text-sm md:text-base text-bookGold tracking-[0.2em] uppercase font-bold">Verborgene Akten & Dossiers</h2>
+                        <div class="h-[1px] flex-1 bg-bookBorder/30"></div>
+                    </div>
+                    <div id="adventures-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ANSICHT 2: ABENTEUER DETAIL & CHARAKTER-AUSWAHL -->
+            <section id="view-adventure-detail" class="hidden space-y-8">
+                <button onclick="switchView('home')" class="font-cinzel text-xs tracking-widest text-bookGold hover:underline flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-arrow-left"></i> Zurück zu den Akten
+                </button>
+
+                <div id="adventure-detail-header" class="bg-bookPanel gold-border rounded p-6 md:p-10 relative">
+                    <div class="corner-ornament corner-tl"></div>
+                    <div class="corner-ornament corner-tr"></div>
+                    <div class="corner-ornament corner-bl"></div>
+                    <div class="corner-ornament corner-br"></div>
+                    <!-- Dynamisch befüllt -->
+                </div>
+
+                <!-- Ermittler-Auswahl / Seelenpakt -->
+                <div class="bg-bookPanel gold-border rounded p-6 md:p-10 relative">
+                    <div class="corner-ornament corner-tl"></div>
+                    <div class="corner-ornament corner-tr"></div>
+                    <div class="corner-ornament corner-bl"></div>
+                    <div class="corner-ornament corner-br"></div>
+
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="font-cinzel text-xl text-bookGold font-bold tracking-wide">Wahl der Ermittler</h3>
+                            <p class="text-bookMuted text-sm font-garamond italic">Bereits rekrutierte Ermittler tragen das Siegel des Wahnsinns und stehen anderen nicht mehr zur Verfügung.</p>
+                        </div>
+                    </div>
+
+                    <div id="characters-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+
+                <!-- Dokumente & Handouts Download -->
+                <div class="bg-bookPanel gold-border rounded p-6 md:p-10 relative">
+                    <div class="corner-ornament corner-tl"></div>
+                    <div class="corner-ornament corner-tr"></div>
+                    <div class="corner-ornament corner-bl"></div>
+                    <div class="corner-ornament corner-br"></div>
+
+                    <h3 class="font-cinzel text-xl text-bookGold font-bold tracking-wide mb-2">Handouts, Beweise & Dossiers</h3>
+                    <p class="text-bookMuted text-sm font-garamond italic mb-6">Vertrauliche Dokumente, Zeitungsausschnitte und Charakterbögen zum Download.</p>
+
+                    <div id="documents-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ANSICHT 3: SPIELLEITER (ADMIN) BEREICH -->
+            <section id="view-admin" class="hidden space-y-10">
+                <div class="flex justify-between items-center bg-bookPanel gold-border p-6 rounded">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-bookGold font-cinzel">Geheimarchiv des Spielleiters</span>
+                        <h2 class="font-cinzel text-2xl font-bold gold-gradient-text">Spielleiter-Steuerung</h2>
+                    </div>
+                    <button onclick="adminLogout()" class="px-4 py-2 border border-red-900/50 text-red-400 font-cinzel text-xs rounded hover:bg-red-950/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-power-off"></i> Siegel schliessen
+                    </button>
+                </div>
+
+                <!-- YouTube Intro URL Konfigurieren -->
+                <div class="bg-bookPanel gold-border rounded p-6 md:p-8 relative">
+                    <h3 class="font-cinzel text-base text-bookGold font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-brands fa-youtube text-red-600"></i> YouTube Intro URL für den Prolog
+                    </h3>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <input type="text" id="admin-intro-url" placeholder="https://www.youtube.com/watch?v=..." class="flex-1 bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                        <button onclick="saveIntroUrl()" class="px-6 py-3 bg-gradient-to-r from-yellow-800 via-amber-700 to-yellow-800 text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:brightness-110 transition shadow">
+                            Intro aktualisieren
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Abenteuer Verwalten -->
+                <div class="bg-bookPanel gold-border rounded p-6 md:p-8 relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-cinzel text-base text-bookGold font-bold">Fallakten (Abenteuer) anlegen & markieren</h3>
+                        <button onclick="openAdventureModal()" class="px-4 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-wider rounded hover:bg-bookGoldLight transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Fallakte anlegen
+                        </button>
+                    </div>
+                    <div id="admin-adventures-list" class="space-y-4">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+
+                <!-- Charaktere Verwalten -->
+                <div class="bg-bookPanel gold-border rounded p-6 md:p-8 relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-cinzel text-base text-bookGold font-bold">Ermittler verwalten</h3>
+                        <button onclick="openCharacterModal()" class="px-4 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-wider rounded hover:bg-bookGoldLight transition flex items-center gap-2">
+                            <i class="fa-solid fa-user-plus"></i> Ermittler hinzufügen
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-2">Akte wählen zur Ermittler-Ansicht:</label>
+                        <select id="admin-char-adventure-select" onchange="renderAdminCharacters()" class="w-full md:w-1/3 bg-bookBlack border border-bookBorder/50 rounded p-2.5 text-bookGold font-garamond text-base">
+                            <!-- Dynamisch befüllt -->
+                        </select>
+                    </div>
+                    <div id="admin-characters-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+
+                <!-- Dokumente Verwalten -->
+                <div class="bg-bookPanel gold-border rounded p-6 md:p-8 relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-cinzel text-base text-bookGold font-bold">Handouts & Dokumente</h3>
+                        <button onclick="openDocumentModal()" class="px-4 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-wider rounded hover:bg-bookGoldLight transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-arrow-up"></i> Handout hochladen
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-2">Akte wählen zur Dokumenten-Ansicht:</label>
+                        <select id="admin-doc-adventure-select" onchange="renderAdminDocuments()" class="w-full md:w-1/3 bg-bookBlack border border-bookBorder/50 rounded p-2.5 text-bookGold font-garamond text-base">
+                            <!-- Dynamisch befüllt -->
+                        </select>
+                    </div>
+                    <div id="admin-documents-list" class="space-y-3">
+                        <!-- Dynamisch befüllt -->
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-bookPanel border-t border-bookBorder/30 py-6 text-center text-[10px] text-bookMuted font-cinzel tracking-[0.2em] mt-12">
+            <p>GESCHÜTZT DURCH DAS ÄLTERE ZEICHEN • MISKATONIC ARCHIV REPOSITORIUM</p>
+        </footer>
+    </div>
+
+    <!-- SPIELLEITER LOGIN MODAL -->
+    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm hidden">
+        <div class="relative bg-bookPanel gold-border p-8 max-w-sm w-full mx-4 rounded shadow-2xl">
+            <div class="corner-ornament corner-tl"></div>
+            <div class="corner-ornament corner-tr"></div>
+            <div class="corner-ornament corner-bl"></div>
+            <div class="corner-ornament corner-br"></div>
+            <h3 class="font-cinzel text-lg text-bookGold font-bold tracking-widest mb-3 text-center">Spielleiter-Zugang</h3>
+            <p class="text-xs text-bookMuted text-center font-garamond mb-4">Geben Sie das Geheimwort ein (Standard: <code class="text-bookGold">admin</code>)</p>
+            <input type="password" id="admin-password-input" placeholder="Geheimwort..." class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base mb-6 focus:outline-none focus:border-bookGold">
+            <div class="flex gap-2">
+                <button onclick="closeAdminLogin()" class="flex-1 py-2 border border-bookBorder text-bookMuted font-cinzel text-xs rounded hover:bg-bookBorder/10 transition">Abbruch</button>
+                <button onclick="verifyAdminLogin()" class="flex-1 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:bg-bookGoldLight transition">Eintreten</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABENTEUER ERSTELLEN/BEARBEITEN MODAL -->
+    <div id="adventure-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm hidden overflow-y-auto py-10">
+        <div class="relative bg-bookPanel gold-border p-8 max-w-lg w-full mx-4 rounded shadow-2xl my-auto">
+            <div class="corner-ornament corner-tl"></div>
+            <div class="corner-ornament corner-tr"></div>
+            <div class="corner-ornament corner-bl"></div>
+            <div class="corner-ornament corner-br"></div>
+            <h3 id="adventure-modal-title" class="font-cinzel text-lg text-bookGold font-bold mb-4">Fallakte anlegen</h3>
+            <input type="hidden" id="edit-adventure-id">
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Titel des Falls</label>
+                    <input type="text" id="adv-title" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Kurzbeschreibung (für Dossier-Ansicht)</label>
+                    <textarea id="adv-short" rows="2" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Ausführlicher Bericht</label>
+                    <textarea id="adv-desc" rows="4" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Dossier Bild-URL</label>
+                    <input type="text" id="adv-image" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="adv-featured" class="w-4 h-4 accent-bookGold">
+                    <label for="adv-featured" class="text-xs font-cinzel text-bookGold">Als prominentes Hauptabenteuer (Titelseite) hervorheben</label>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="closeAdventureModal()" class="flex-1 py-2 border border-bookBorder text-bookMuted font-cinzel text-xs rounded hover:bg-bookBorder/10 transition">Abbruch</button>
+                <button onclick="saveAdventure()" class="flex-1 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:bg-bookGoldLight transition">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARAKTER MODAL -->
+    <div id="character-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm hidden overflow-y-auto py-10">
+        <div class="relative bg-bookPanel gold-border p-8 max-w-lg w-full mx-4 rounded shadow-2xl my-auto">
+            <div class="corner-ornament corner-tl"></div>
+            <div class="corner-ornament corner-tr"></div>
+            <div class="corner-ornament corner-bl"></div>
+            <div class="corner-ornament corner-br"></div>
+            <h3 class="font-cinzel text-lg text-bookGold font-bold mb-4">Ermittler hinzufügen</h3>
+            <input type="hidden" id="edit-character-id">
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Welcher Fallakte zuordnen?</label>
+                    <select id="char-adv-id" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base">
+                        <!-- Wird befüllt -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Name des Ermittlers</label>
+                    <input type="text" id="char-name" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Beruf / Profession (z.B. Professor, Privatdetektiv)</label>
+                    <input type="text" id="char-class" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Psychologischer Hintergrund / Notiz</label>
+                    <textarea id="char-desc" rows="3" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Porträt Bild-URL</label>
+                    <input type="text" id="char-image" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="closeCharacterModal()" class="flex-1 py-2 border border-bookBorder text-bookMuted font-cinzel text-xs rounded hover:bg-bookBorder/10 transition">Abbruch</button>
+                <button onclick="saveCharacter()" class="flex-1 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:bg-bookGoldLight transition">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOKUMENT MODAL -->
+    <div id="document-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm hidden overflow-y-auto py-10">
+        <div class="relative bg-bookPanel gold-border p-8 max-w-lg w-full mx-4 rounded shadow-2xl my-auto">
+            <div class="corner-ornament corner-tl"></div>
+            <div class="corner-ornament corner-tr"></div>
+            <div class="corner-ornament corner-bl"></div>
+            <div class="corner-ornament corner-br"></div>
+            <h3 class="font-cinzel text-lg text-bookGold font-bold mb-4">Handout / Dokument hinterlegen</h3>
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Welcher Fallakte zuordnen?</label>
+                    <select id="doc-adv-id" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base">
+                        <!-- Wird befüllt -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Dokumenten-Titel (z.B. Telegramm aus Innsmouth)</label>
+                    <input type="text" id="doc-title" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Kategorie</label>
+                    <select id="doc-type" class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base">
+                        <option value="HANDOUT">Handout / Brief</option>
+                        <option value="KARTE">Ermittlungskarte</option>
+                        <option value="BOGEN">Charakterbogen</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Web-Link (URL)</label>
+                    <input type="text" id="doc-url" placeholder="https://..." class="w-full bg-bookBlack border border-bookBorder/50 rounded p-3 text-bookGold font-garamond text-base focus:outline-none focus:border-bookGold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-cinzel text-bookMuted uppercase mb-1">Oder Datei von Festplatte wählen (lokale Einbettung)</label>
+                    <input type="file" id="doc-file-input" class="w-full text-xs text-bookMuted file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-cinzel file:bg-bookGold file:text-bookBlack hover:file:bg-bookGoldLight">
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="closeDocumentModal()" class="flex-1 py-2 border border-bookBorder text-bookMuted font-cinzel text-xs rounded hover:bg-bookBorder/10 transition">Abbruch</button>
+                <button onclick="saveDocument()" class="flex-1 py-2 bg-bookGold text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:bg-bookGoldLight transition">Hinzufügen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS LOGIK -->
+    <script>
+        const defaultData = {
+            introUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
+            isAdminLoggedIn: false,
+            adventures: [
+                {
+                    id: "adv-1",
+                    title: "Schatten über Innsmouth",
+                    shortDesc: "Ein verfallener Küstenort, seltsame Kiemenwesen und ein unaussprechlicher Pakt im Schatten von Dagon.",
+                    desc: "Die Kutsche hält am Rande des verfallenen Hafens von Innsmouth. Die Bewohner starren mit glasigen Augen und zuckenden Bewegungen. Eure Nachforschungen über verschwundene Seefahrer führen euch direkt in die finsteren Gewölbe des Esoteric Order of Dagon.",
+                    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+                    featured: true
+                },
+                {
+                    id: "adv-2",
+                    title: "Der Flüsternde in der Finsternis",
+                    shortDesc: "Vermont-Hügel, unheimliche Stimmen im Wind und geheimnisvolle Gehirne in Zylindern von Yuggoth.",
+                    desc: "Briefe von Professor Albert Wilmarth berichten von seltsamen Entitäten, die in den entlegenen Wäldern von Vermont hausen. Findet die Wahrheit heraus, bevor die kosmische Vernunft im Wahnsinn versinkt.",
+                    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+                    featured: false
+                }
+            ],
+            characters: [
+                {
+                    id: "char-1",
+                    adventureId: "adv-1",
+                    name: "Prof. Dr. Henry Armitage",
+                    className: "Miskatonic Bibliothekar",
+                    desc: "Experte für verbotene Folianten und okkulte Sprachen. Seine Sanity bröckelt.",
+                    image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
+                    claimedBy: null
+                },
+                {
+                    id: "char-2",
+                    adventureId: "adv-1",
+                    name: "Thomas Malone",
+                    className: "Polizist & Autor",
+                    desc: "Erleidet seit den Vorfällen in New York Albträume von zyklopäischen Städten.",
+                    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+                    claimedBy: "Ermittler Markus"
+                },
+                {
+                    id: "char-3",
+                    adventureId: "adv-2",
+                    name: "Dr. Carson Tyler",
+                    className: "Archeologe & Mediziner",
+                    desc: "Glaubt fest an wissenschaftliche Rationalität – bis jetzt.",
+                    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+                    claimedBy: null
+                }
+            ],
+            documents: [
+                {
+                    id: "doc-1",
+                    adventureId: "adv-1",
+                    title: "Telegramm aus Innsmouth (Handout 1)",
+                    type: "HANDOUT",
+                    url: "https://www.wizards.com/dnd/files/CharacterSheet.pdf"
+                },
+                {
+                    id: "doc-2",
+                    adventureId: "adv-1",
+                    title: "Offizieller CoC 7th Ed. Ermittlerbogen",
+                    type: "BOGEN",
+                    url: "https://www.chaosium.com"
+                }
+            ]
+        };
+
+        let appData = JSON.parse(localStorage.getItem('cthulhu_codex_data')) || defaultData;
+        let currentAdventureId = null;
+
+        function saveAppData() {
+            localStorage.setItem('cthulhu_codex_data', JSON.stringify(appData));
+        }
+
+        function showModal(title, message) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('notification-modal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('notification-modal').classList.add('hidden');
+        }
+
+        function initIntro() {
+            const container = document.getElementById('youtube-player-container');
+            let url = appData.introUrl || "https://www.youtube.com/embed/dQw4w9WgXcQ";
+            if(url.includes('watch?v=')) {
+                url = url.replace('watch?v=', 'embed/') + '?autoplay=1';
+            }
+            container.innerHTML = `<iframe src="${url}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        }
+
+        function skipIntro() {
+            const overlay = document.getElementById('intro-overlay');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                const mainApp = document.getElementById('main-app');
+                mainApp.classList.remove('hidden');
+                setTimeout(() => mainApp.classList.remove('opacity-0'), 50);
+            }, 1000);
+        }
+
+        function switchView(viewName, advId = null) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-adventure-detail').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+
+            document.getElementById('nav-home-btn').classList.remove('bg-bookGold/20');
+
+            if(viewName === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('nav-home-btn').classList.add('bg-bookGold/20');
+                renderHome();
+            } else if(viewName === 'detail' && advId) {
+                currentAdventureId = advId;
+                document.getElementById('view-adventure-detail').classList.remove('hidden');
+                renderAdventureDetail(advId);
+            } else if(viewName === 'admin') {
+                if(!appData.isAdminLoggedIn) {
+                    openAdminLogin();
+                    return;
+                }
+                document.getElementById('view-admin').classList.remove('hidden');
+                renderAdminPanel();
+            }
+        }
+
+        function renderHome() {
+            const featuredContainer = document.getElementById('featured-content');
+            const gridContainer = document.getElementById('adventures-grid');
+
+            const featured = appData.adventures.find(a => a.featured) || appData.adventures[0];
+            const others = appData.adventures.filter(a => a.id !== (featured ? featured.id : null));
+
+            if(featured) {
+                featuredContainer.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                        <div class="lg:col-span-1 h-64 lg:h-80 rounded overflow-hidden gold-border relative">
+                            <img src="${featured.image}" alt="${featured.title}" class="w-full h-full object-cover filter brightness-90 hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/0e0e12/d4af37?text=Cthulhu'">
+                            <span class="absolute top-3 left-3 bg-bookGold text-bookBlack font-cinzel text-[10px] font-bold tracking-widest px-3 py-1 rounded shadow">ÄLTERES ZEICHEN AKTIV</span>
+                        </div>
+                        <div class="lg:col-span-2 space-y-4">
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-bookGold font-cinzel">Hauptsächliche Fallakte</span>
+                            <h2 class="font-cinzelDeco text-2xl md:text-3xl gold-gradient-text">${featured.title}</h2>
+                            <p class="font-garamond text-bookMuted text-lg leading-relaxed">${featured.shortDesc}</p>
+                            <div class="pt-2">
+                                <button onclick="switchView('detail', '${featured.id}')" class="px-8 py-3 bg-gradient-to-r from-yellow-800 via-amber-700 to-yellow-800 text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:brightness-110 transition shadow-lg flex items-center gap-2">
+                                    <span>Akte öffnen & Ermittler wählen</span>
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                featuredContainer.innerHTML = `<p class="text-center text-bookMuted font-garamond">Keine Fallakte als hervorgehoben markiert.</p>`;
+            }
+
+            gridContainer.innerHTML = '';
+            if(others.length === 0) {
+                gridContainer.innerHTML = `<p class="text-bookMuted font-garamond italic col-span-full text-center">Keine weiteren Fallakten im Archiv.</p>`;
+            } else {
+                others.forEach(adv => {
+                    gridContainer.innerHTML += `
+                        <div class="bg-bookPanel gold-border rounded p-6 relative flex flex-col justify-between hover:border-bookGold transition duration-300">
+                            <div class="corner-ornament corner-tl"></div>
+                            <div class="corner-ornament corner-tr"></div>
+                            <div class="corner-ornament corner-bl"></div>
+                            <div class="corner-ornament corner-br"></div>
+                            <div>
+                                <div class="h-44 rounded overflow-hidden mb-4 border border-bookBorder/30">
+                                    <img src="${adv.image}" alt="${adv.title}" class="w-full h-full object-cover filter brightness-90" onerror="this.src='https://placehold.co/600x400/0e0e12/d4af37?text=Fallakte'">
+                                </div>
+                                <h3 class="font-cinzel text-lg text-bookGold font-bold mb-2">${adv.title}</h3>
+                                <p class="font-garamond text-bookMuted text-base mb-4 leading-relaxed">${adv.shortDesc}</p>
+                            </div>
+                            <button onclick="switchView('detail', '${adv.id}')" class="w-full py-2 bg-transparent border border-bookBorder text-bookGold font-cinzel text-xs tracking-wider rounded hover:bg-bookGold/10 transition">
+                                Dossier einsehen
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function renderAdventureDetail(advId) {
+            const adv = appData.adventures.find(a => a.id === advId);
+            if(!adv) return;
+
+            const header = document.getElementById('adventure-detail-header');
+            header.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="h-60 rounded overflow-hidden gold-border">
+                        <img src="${adv.image}" alt="${adv.title}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/0e0e12/d4af37?text=Akte'">
+                    </div>
+                    <div class="md:col-span-2 space-y-3">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-bookGold font-cinzel">Fallbericht #Cthulhu</span>
+                        <h2 class="font-cinzelDeco text-2xl md:text-3xl text-bookGold">${adv.title}</h2>
+                        <p class="font-garamond text-bookMuted text-lg leading-relaxed">${adv.desc}</p>
+                    </div>
+                </div>
+            `;
+
+            const charsGrid = document.getElementById('characters-grid');
+            const chars = appData.characters.filter(c => c.adventureId === advId);
+            charsGrid.innerHTML = '';
+
+            if(chars.length === 0) {
+                charsGrid.innerHTML = `<p class="text-bookMuted font-garamond italic col-span-full text-center">Für diese Fallakte wurden noch keine Ermittler rekrutiert.</p>`;
+            } else {
+                chars.forEach(char => {
+                    const isClaimed = char.claimedBy !== null && char.claimedBy !== "";
+                    charsGrid.innerHTML += `
+                        <div class="bg-bookBlack/80 border ${isClaimed ? 'border-red-950/80 opacity-70' : 'border-bookBorder'} rounded p-5 relative flex flex-col justify-between">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-16 h-16 rounded-full overflow-hidden gold-border flex-shrink-0">
+                                    <img src="${char.image}" alt="${char.name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/200x200/0e0e12/d4af37?text=Ermittler'">
+                                </div>
+                                <div>
+                                    <h4 class="font-cinzel text-base text-bookGold font-bold">${char.name}</h4>
+                                    <span class="text-xs font-garamond italic text-bookMuted block">${char.className}</span>
+                                    <span class="inline-block mt-1 px-2 py-0.5 rounded text-[9px] font-cinzel tracking-wider uppercase ${isClaimed ? 'bg-red-950/80 text-red-300 border border-red-800' : 'bg-emerald-950/60 text-emerald-300 border border-emerald-800'}">
+                                        ${isClaimed ? 'Vergeben an: ' + char.claimedBy : 'Verfügbar'}
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="font-garamond text-sm text-bookMuted mb-4 leading-relaxed">${char.desc}</p>
+                            <div>
+                                ${isClaimed ? `
+                                    <button onclick="unclaimCharacter('${char.id}')" class="w-full py-2 bg-red-950/40 border border-red-900 text-red-300 font-cinzel text-xs rounded hover:bg-red-900/40 transition">
+                                        Ermittler freigeben (Wahnsinn ablegen)
+                                    </button>
+                                ` : `
+                                    <button onclick="promptClaimCharacter('${char.id}')" class="w-full py-2 bg-gradient-to-r from-yellow-800 via-amber-700 to-yellow-800 text-bookBlack font-cinzel text-xs font-bold tracking-widest rounded hover:brightness-110 transition shadow">
+                                        Ermittler beanspruchen
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            const docsGrid = document.getElementById('documents-grid');
+            const docs = appData.documents.filter(d => d.adventureId === advId);
+            docsGrid.innerHTML = '';
+
+            if(docs.length === 0) {
+                docsGrid.innerHTML = `<p class="text-bookMuted font-garamond italic col-span-full text-center">Keine Handouts in der Akte.</p>`;
+            } else {
+                docs.forEach(doc => {
+                    docsGrid.innerHTML += `
+                        <div class="bg-bookBlack/60 border border-bookBorder/40 rounded p-4 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="text-bookGold text-xl"><i class="fa-solid fa-file-lines"></i></div>
+                                <div>
+                                    <h5 class="font-cinzel text-sm text-bookGold font-bold">${doc.title}</h5>
+                                    <span class="text-[9px] font-cinzel text-bookMuted uppercase tracking-wider">Typ: ${doc.type}</span>
+                                </div>
+                            </div>
+                            <a href="${doc.url}" target="_blank" class="px-4 py-2 border border-bookBorder text-bookGold font-cinzel text-xs rounded hover:bg-bookGold/10 transition flex items-center gap-2">
+                                <i class="fa-solid fa-download"></i> Laden
+                            </a>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function promptClaimCharacter(charId) {
+            const playerName = prompt("Geben Sie Ihren Namen als Ermittler ein:");
+            if(playerName && playerName.trim() !== "") {
+                const char = appData.characters.find(c => c.id === charId);
+                if(char) {
+                    char.claimedBy = playerName.trim();
+                    saveAppData();
+                    renderAdventureDetail(currentAdventureId);
+                }
+            }
+        }
+
+        function unclaimCharacter(charId) {
+            const char = appData.characters.find(c => c.id === charId);
+            if(char) {
+                char.claimedBy = null;
+                saveAppData();
+                renderAdventureDetail(currentAdventureId);
+            }
+        }
+
+        function openAdminLogin() {
+            if(appData.isAdminLoggedIn) {
+                switchView('admin');
+                return;
+            }
+            document.getElementById('admin-password-input').value = '';
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+        function closeAdminLogin() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+        function verifyAdminLogin() {
+            const pwd = document.getElementById('admin-password-input').value;
+            if(pwd === "admin") {
+                appData.isAdminLoggedIn = true;
+                saveAppData();
+                closeAdminLogin();
+                document.getElementById('admin-btn-text').innerText = "Spielleiter-Bereich";
+                switchView('admin');
+            } else {
+                showModal("Unbefugter Zugriff", "Das eingegebene Geheimwort entspricht nicht den Aufzeichnungen.");
+            }
+        }
+        function adminLogout() {
+            appData.isAdminLoggedIn = false;
+            saveAppData();
+            document.getElementById('admin-btn-text').innerText = "Spielleiter-Bereich";
+            switchView('home');
+        }
+
+        function renderAdminPanel() {
+            document.getElementById('admin-intro-url').value = appData.introUrl || "";
+
+            const advList = document.getElementById('admin-adventures-list');
+            advList.innerHTML = '';
+            appData.adventures.forEach(adv => {
+                advList.innerHTML += `
+                    <div class="bg-bookBlack/60 border ${adv.featured ? 'border-bookGold' : 'border-bookBorder/30'} rounded p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="font-cinzel text-bookGold font-bold">${adv.title}</h4>
+                                ${adv.featured ? '<span class="px-2 py-0.5 bg-bookGold text-bookBlack font-cinzel text-[9px] font-bold rounded">Hervorgehoben</span>' : ''}
+                            </div>
+                            <p class="text-xs text-bookMuted font-garamond">${adv.shortDesc}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openAdventureModal('${adv.id}')" class="px-3 py-1.5 border border-bookBorder text-bookGold font-cinzel text-xs rounded hover:bg-bookGold/10">Bearbeiten</button>
+                            <button onclick="deleteAdventure('${adv.id}')" class="px-3 py-1.5 border border-red-900/50 text-red-400 font-cinzel text-xs rounded hover:bg-red-950/30">Vernichten</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            updateAdventureSelects();
+            renderAdminCharacters();
+            renderAdminDocuments();
+        }
+
+        function updateAdventureSelects() {
+            const selects = ['admin-char-adventure-select', 'admin-doc-adventure-select', 'char-adv-id', 'doc-adv-id'];
+            selects.forEach(selId => {
+                const sel = document.getElementById(selId);
+                if(!sel) return;
+                const currentVal = sel.value;
+                sel.innerHTML = '';
+                appData.adventures.forEach(adv => {
+                    sel.innerHTML += `<option value="${adv.id}">${adv.title}</option>`;
+                });
+                if(currentVal) sel.value = currentVal;
+            });
+        }
+
+        function saveIntroUrl() {
+            const url = document.getElementById('admin-intro-url').value;
+            appData.introUrl = url;
+            saveAppData();
+            showModal("Gespeichert", "Die YouTube Intro URL des Prologs wurde aktualisiert.");
+        }
+
+        function openAdventureModal(id = null) {
+            document.getElementById('edit-adventure-id').value = id || '';
+            if(id) {
+                const adv = appData.adventures.find(a => a.id === id);
+                document.getElementById('adventure-modal-title').innerText = "Fallakte bearbeiten";
+                document.getElementById('adv-title').value = adv.title;
+                document.getElementById('adv-short').value = adv.shortDesc;
+                document.getElementById('adv-desc').value = adv.desc;
+                document.getElementById('adv-image').value = adv.image;
+                document.getElementById('adv-featured').checked = adv.featured;
+            } else {
+                document.getElementById('adventure-modal-title').innerText = "Fallakte anlegen";
+                document.getElementById('adv-title').value = '';
+                document.getElementById('adv-short').value = '';
+                document.getElementById('adv-desc').value = '';
+                document.getElementById('adv-image').value = '';
+                document.getElementById('adv-featured').checked = false;
+            }
+            document.getElementById('adventure-modal').classList.remove('hidden');
+        }
+        function closeAdventureModal() {
+            document.getElementById('adventure-modal').classList.add('hidden');
+        }
+        function saveAdventure() {
+            const id = document.getElementById('edit-adventure-id').value;
+            const title = document.getElementById('adv-title').value;
+            const shortDesc = document.getElementById('adv-short').value;
+            const desc = document.getElementById('adv-desc').value;
+            const image = document.getElementById('adv-image').value || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80";
+            const featured = document.getElementById('adv-featured').checked;
+
+            if(!title) {
+                showModal("Fehler", "Bitte geben Sie einen Titel an.");
+                return;
+            }
+
+            if(featured) {
+                appData.adventures.forEach(a => a.featured = false);
+            }
+
+            if(id) {
+                const adv = appData.adventures.find(a => a.id === id);
+                if(adv) {
+                    adv.title = title;
+                    adv.shortDesc = shortDesc;
+                    adv.desc = desc;
+                    adv.image = image;
+                    adv.featured = featured;
+                }
+            } else {
+                const newAdv = {
+                    id: 'adv-' + Date.now(),
+                    title,
+                    shortDesc,
+                    desc,
+                    image,
+                    featured
+                };
+                appData.adventures.push(newAdv);
+            }
+
+            saveAppData();
+            closeAdventureModal();
+            renderAdminPanel();
+        }
+        function deleteAdventure(id) {
+            if(confirm("Möchten Sie diese Fallakte vernichten?")) {
+                appData.adventures = appData.adventures.filter(a => a.id !== id);
+                appData.characters = appData.characters.filter(c => c.adventureId !== id);
+                appData.documents = appData.documents.filter(d => d.adventureId !== id);
+                saveAppData();
+                renderAdminPanel();
+            }
+        }
+
+        function renderAdminCharacters() {
+            const advId = document.getElementById('admin-char-adventure-select').value;
+            const list = document.getElementById('admin-characters-list');
+            list.innerHTML = '';
+            const chars = appData.characters.filter(c => c.adventureId === advId);
+
+            if(chars.length === 0) {
+                list.innerHTML = `<p class="text-bookMuted font-garamond italic col-span-full">Keine Ermittler für diese Fallakte.</p>`;
+                return;
+            }
+
+            chars.forEach(char => {
+                list.innerHTML += `
+                    <div class="bg-bookBlack/60 border border-bookBorder/30 rounded p-4 flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <img src="${char.image}" class="w-12 h-12 rounded-full object-cover gold-border" onerror="this.src='https://placehold.co/100x100/0e0e12/d4af37?text=E'">
+                            <div>
+                                <h5 class="font-cinzel text-bookGold font-bold text-sm">${char.name}</h5>
+                                <span class="text-xs text-bookMuted font-garamond">${char.className} • ${char.claimedBy ? 'Besetzt' : 'Frei'}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteCharacter('${char.id}')" class="px-2.5 py-1 border border-red-900/50 text-red-400 font-cinzel text-xs rounded hover:bg-red-950/30">Löschen</button>
+                    </div>
+                `;
+            });
+        }
+
+        function openCharacterModal() {
+            document.getElementById('char-name').value = '';
+            document.getElementById('char-class').value = '';
+            document.getElementById('char-desc').value = '';
+            document.getElementById('char-image').value = '';
+            document.getElementById('character-modal').classList.remove('hidden');
+        }
+        function closeCharacterModal() {
+            document.getElementById('character-modal').classList.add('hidden');
+        }
+        function saveCharacter() {
+            const advId = document.getElementById('char-adv-id').value;
+            const name = document.getElementById('char-name').value;
+            const className = document.getElementById('char-class').value;
+            const desc = document.getElementById('char-desc').value;
+            const image = document.getElementById('char-image').value || "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80";
+
+            if(!name || !advId) {
+                showModal("Fehler", "Bitte Name und Fallakte angeben.");
+                return;
+            }
+
+            const newChar = {
+                id: 'char-' + Date.now(),
+                adventureId: advId,
+                name,
+                className,
+                desc,
+                image,
+                claimedBy: null
+            };
+
+            appData.characters.push(newChar);
+            saveAppData();
+            closeCharacterModal();
+            renderAdminCharacters();
+        }
+        function deleteCharacter(id) {
+            appData.characters = appData.characters.filter(c => c.id !== id);
+            saveAppData();
+            renderAdminCharacters();
+        }
+
+        function renderAdminDocuments() {
+            const advId = document.getElementById('admin-doc-adventure-select').value;
+            const list = document.getElementById('admin-documents-list');
+            list.innerHTML = '';
+            const docs = appData.documents.filter(d => d.adventureId === advId);
+
+            if(docs.length === 0) {
+                list.innerHTML = `<p class="text-bookMuted font-garamond italic">Keine Handouts.</p>`;
+                return;
+            }
+
+            docs.forEach(doc => {
+                list.innerHTML += `
+                    <div class="bg-bookBlack/60 border border-bookBorder/30 rounded p-3 flex items-center justify-between">
+                        <div>
+                            <h5 class="font-cinzel text-bookGold font-bold text-sm">${doc.title}</h5>
+                            <span class="text-[9px] text-bookMuted font-cinzel">Typ: ${doc.type}</span>
+                        </div>
+                        <button onclick="deleteDocument('${doc.id}')" class="px-2.5 py-1 border border-red-900/50 text-red-400 font-cinzel text-xs rounded hover:bg-red-950/30">Löschen</button>
+                    </div>
+                `;
+            });
+        }
+
+        function openDocumentModal() {
+            document.getElementById('doc-title').value = '';
+            document.getElementById('doc-url').value = '';
+            document.getElementById('doc-file-input').value = '';
+            document.getElementById('document-modal').classList.remove('hidden');
+        }
+        function closeDocumentModal() {
+            document.getElementById('document-modal').classList.add('hidden');
+        }
+        function saveDocument() {
+            const advId = document.getElementById('doc-adv-id').value;
+            const title = document.getElementById('doc-title').value;
+            const type = document.getElementById('doc-type').value;
+            let url = document.getElementById('doc-url').value;
+            const fileInput = document.getElementById('doc-file-input');
+
+            if(!title || !advId) {
+                showModal("Fehler", "Bitte Titel und Fallakte angeben.");
+                return;
+            }
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newDoc = {
+                        id: 'doc-' + Date.now(),
+                        adventureId: advId,
+                        title,
+                        type,
+                        url: e.target.result
+                    };
+                    appData.documents.push(newDoc);
+                    saveAppData();
+                    closeDocumentModal();
+                    renderAdminDocuments();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+                return;
+            }
+
+            if(!url) {
+                showModal("Fehler", "Bitte URL angeben oder Datei wählen.");
+                return;
+            }
+
+            const newDoc = {
+                id: 'doc-' + Date.now(),
+                adventureId: advId,
+                title,
+                type,
+                url
+            };
+
+            appData.documents.push(newDoc);
+            saveAppData();
+            closeDocumentModal();
+            renderAdminDocuments();
+        }
+        function deleteDocument(id) {
+            appData.documents = appData.documents.filter(d => d.id !== id);
+            saveAppData();
+            renderAdminDocuments();
+        }
+
+        window.onload = function() {
+            initIntro();
+        };
+    </script>
+</body>
+</html>
