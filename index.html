@@ -64,10 +64,10 @@
             <div class="corner-ornament corner-tr"></div>
             <div class="corner-ornament corner-bl"></div>
             <div class="corner-ornament corner-br"></div>
-            <iframe id="intro-iframe" class="w-full h-full border-0" src="https://www.youtube.com/embed/JWImZexOj94" title="Cthulhu Intro" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe id="intro-iframe" class="w-full h-full border-0" src="https://www.youtube.com/embed/JWImZexOj94?autoplay=1" title="Cthulhu Intro" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <!-- Ohne onclick im HTML, wird sauber über JS gebunden -->
-        <button id="skip-btn" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase cursor-pointer">
+        <!-- Direktes window.skipIntro aufrufbar gemacht -->
+        <button onclick="window.skipIntro()" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase cursor-pointer">
             Prolog überspringen & Akten öffnen →
         </button>
     </div>
@@ -159,8 +159,10 @@
                     <button onclick="closeAdminModal()" class="text-gold-400 hover:text-white text-sm font-cinzel cursor-pointer">[ Schließen ]</button>
                 </div>
 
-                <!-- Intro Video Einstellungen -->
+                <!-- Abenteuer anlegen -->
                 <div>
-                    <h4 class="text-sm font-cinzel text-gold-400 mb-2">YouTube-Intro URL (Embed Format)</h4>
-                    <input type="text" id="admin-intro-url" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300 mb-2">
-                    <button onclick="saveIntroUrl()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/2
+                    <h4 class="text-sm font-cinzel text-gold-400 mb-2">Neues Abenteuer anlegen</h4>
+                    <div class="space-y-2">
+                        <input type="text" id="new-adv-title" placeholder="Titel des Abenteuers" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300">
+                        <textarea id="new-adv-desc" placeholder="Beschreibung / Fallakte" class="w-full bg-black border border-gold-500/50 p-2 text-xs text-stone-300 h-20"></textarea>
+                        <button onclick="addAdventure()" class="px-3 py-1 text-xs font-cinzel bg-gold-500/20 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black
