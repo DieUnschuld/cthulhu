@@ -66,7 +66,8 @@
             <div class="corner-ornament corner-br"></div>
             <iframe id="intro-iframe" class="w-full h-full border-0" src="https://www.youtube.com/embed/JWImZexOj94" title="Cthulhu Intro" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <button id="skip-btn" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase cursor-pointer">
+        <!-- Direktes onclick eingefügt, damit der Klick garantiert funktioniert -->
+        <button onclick="skipIntro()" class="font-cinzel px-8 py-3 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-black transition-all duration-300 tracking-widest text-sm uppercase cursor-pointer">
             Prolog überspringen & Akten öffnen →
         </button>
     </div>
@@ -243,11 +244,6 @@
             if (iframe) iframe.src = "";
         }
 
-        const skipBtn = document.getElementById('skip-btn');
-        if (skipBtn) {
-            skipBtn.addEventListener('click', skipIntro);
-        }
-
         const iframeElem = document.getElementById('intro-iframe');
         if (iframeElem) {
             iframeElem.src = appData.introUrl || "https://www.youtube.com/embed/JWImZexOj94";
@@ -317,107 +313,4 @@
             const docContainer = document.getElementById('documents-list');
             docContainer.innerHTML = appData.documents.map(doc => `
                 <a href="${doc.url}" target="_blank" class="flex items-center gap-3 p-3 bg-black/50 border border-gold-500/30 hover:border-gold-500 transition-all rounded group">
-                    <svg class="w-5 h-5 text-gold-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    <span class="text-xs text-stone-300 group-hover:text-gold-400 transition-colors">${doc.name}</span>
-                </a>
-            `).join('');
-        }
-
-        function selectChar(advId, charId) {
-            const input = document.getElementById(`name-${charId}`);
-            const playerName = input.value.trim();
-            if(!playerName) {
-                alert('Bitte geben Sie Ihren Namen ein.');
-                return;
-            }
-            const adv = appData.adventures.find(a => a.id === advId);
-            const char = adv.characters.find(c => c.id === charId);
-            char.selectedBy = playerName;
-            saveData();
-        }
-
-        function setFeatured(id) {
-            appData.featuredId = id;
-            saveData();
-        }
-
-        function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
-        function closeAdminModal() {
-            document.getElementById('admin-modal').classList.add('hidden');
-            document.getElementById('admin-pass').value = '';
-            document.getElementById('admin-login-view').classList.remove('hidden');
-            document.getElementById('admin-panel-view').classList.add('hidden');
-        }
-        function checkAdminLogin() {
-            if(document.getElementById('admin-pass').value === 'admin') {
-                document.getElementById('admin-login-view').classList.add('hidden');
-                document.getElementById('admin-panel-view').classList.remove('hidden');
-                document.getElementById('admin-intro-url').value = appData.introUrl;
-                renderAdminPanel();
-            } else {
-                alert('Falsches Geheimwort.');
-            }
-        }
-        function saveIntroUrl() {
-            const url = document.getElementById('admin-intro-url').value.trim();
-            if(url) {
-                appData.introUrl = url;
-                const iframe = document.getElementById('intro-iframe');
-                if (iframe) iframe.src = url;
-                saveData();
-                alert('Intro-Link aktualisiert.');
-            }
-        }
-        function addAdventure() {
-            const title = document.getElementById('new-adv-title').value.trim();
-            const desc = document.getElementById('new-adv-desc').value.trim();
-            if(!title) return;
-            appData.adventures.push({
-                id: 'adv-' + Date.now(),
-                title, description: desc,
-                characters: [{ id: 'c-' + Date.now(), name: 'Ermittler 1', role: 'Detektiv', portrait: '', docName: '', docUrl: '', selectedBy: null }]
-            });
-            document.getElementById('new-adv-title').value = '';
-            document.getElementById('new-adv-desc').value = '';
-            saveData();
-            renderAdminPanel();
-        }
-        function addDocument() {
-            const name = document.getElementById('new-doc-name').value.trim();
-            const url = document.getElementById('new-doc-url').value.trim();
-            if(!name || !url) return;
-            appData.documents.push({ name, url });
-            document.getElementById('new-doc-name').value = '';
-            document.getElementById('new-doc-url').value = '';
-            saveData();
-            renderAdminPanel();
-            alert('Dokument hinzugefügt.');
-        }
-        function addCharToAdv(advId) {
-            const name = prompt("Name des Charakters:");
-            const role = prompt("Rolle / Beruf:");
-            if(!name) return;
-            const adv = appData.adventures.find(a => a.id === advId);
-            adv.characters.push({ id: 'c-' + Date.now(), name, role, portrait: '', docName: '', docUrl: '', selectedBy: null });
-            saveData();
-            renderAdminPanel();
-        }
-        function deleteAdv(advId) {
-            appData.adventures = appData.adventures.filter(a => a.id !== advId);
-            saveData();
-            renderAdminPanel();
-        }
-        function removeChar(advId, charId) {
-            const adv = appData.adventures.find(a => a.id === advId);
-            adv.characters = adv.characters.filter(c => c.id !== charId);
-            saveData();
-            renderAdminPanel();
-        }
-
-        function editAdventure(advId) {
-            const adv = appData.adventures.find(a => a.id === advId);
-            editContext = { type: 'adventure', id: advId };
-            document.getElementById('edit-modal-title').innerText = "Abenteuer bearbeiten";
-            document.getElementById('edit-modal-body').innerHTML = `
-                <label class="text-xs text-gold-400">Titel</label>
-                <input type="
+                    <svg class="w-5 h-5 text-gold-500 flex-shrink-0"
